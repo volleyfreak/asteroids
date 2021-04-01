@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="common\shader.cpp" />
     <ClCompile Include="source\IndexBuffer.cpp" />
+    <ClCompile Include="source\objects\ship.cpp" />
     <ClCompile Include="source\Renderer.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\VertexBuffer.cpp" />
@@ -144,8 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\shader.hpp" />
+    <ClInclude Include="source\constants\constants.h" />
     <ClInclude Include="source\IndexBuffer.h" />
     <ClInclude Include="source\Renderer.h" />
+    <ClInclude Include="source\objects\ship.h" />
     <ClInclude Include="source\VertexBuffer.h" />
     <ClInclude Include="source\VertexArray.h" />
     <ClInclude Include="source\VertexBufferLayout.h" />

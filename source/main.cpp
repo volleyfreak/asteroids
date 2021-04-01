@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 
+#include "constants/constants.h"
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -93,6 +94,102 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 	return program;
 }
 
+//template<typename Scalar, std::enable_if_t<std::is_arithmetic_v<Scalar>, int> = 0> //todo: what is a template
+//struct Vector2
+//{
+//	Scalar x = 0;
+//	Scalar y = 0;
+//
+//public:
+//	constexpr Vector2 operator*=(Scalar s) const noexcept
+//	{
+//		x *= s;
+//		y *= s;
+//
+//		return *this;
+//	}
+//
+//	constexpr Vector2 operator/=(Scalar s) const noexcept
+//	{
+//		x /= s;
+//		y /= s;
+//
+//		return *this;
+//	}
+//
+//	constexpr Vector2& operator+=(const Vector2& other) noexcept
+//	{
+//		x += other.x;
+//		y += other.y;
+//
+//		return *this;
+//	}
+
+	/*LEPONG_NODISCARD constexpr Vector2 operator*(Scalar s) const noexcept
+	{
+		return { x * s, y * s };
+	}
+
+	LEPONG_NODISCARD constexpr Vector2 operator/(Scalar s) const noexcept
+	{
+		return { x / s, y / s };
+	}
+
+	LEPONG_NODISCARD constexpr Vector2 operator-() const noexcept
+	{
+		return { -x, -y };
+	}
+
+	LEPONG_NODISCARD constexpr Vector2 operator+(const Vector2& other) const noexcept
+	{
+		return { x + other.x, y + other.y };
+	}
+
+	LEPONG_NODISCARD constexpr Vector2 operator-(const Vector2& other) const noexcept
+	{
+		return { x - other.x, y - other.y };
+	}
+
+public:
+	LEPONG_NODISCARD constexpr float Mag() const noexcept
+	{
+		const auto kSqMag = (float)SquareMag();
+		return sqrtf(kSqMag);
+	}
+
+	LEPONG_NODISCARD constexpr Scalar SquareMag() const noexcept
+	{
+		return (x * x) + (y * y);
+	}*/
+//};
+
+void updateInput(GLFWwindow* window, float& x, float& y)
+{
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+		y += 0.01f;
+
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
+		y -= 0.01f;
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
+		x += 0.01f;
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
+		x -= 0.01f;
+}
+
+void transferCoordinates(float& x, float& y) 
+{
+	if (y > 1)
+		y = -1;
+	if (y < -1)
+		y = 1;
+	if (x > 1)
+		x = -1;
+	if (x < -1)
+		x = 1;
+}
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -106,7 +203,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(ASTEROIDS_WIN_HEIGHT,  ASTEROIDS_WIN_WIDTH, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -153,7 +250,13 @@ int main(void)
 	
 	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
 	ASSERT(location != -1);
-	GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f));
+	//GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f));
+
+	
+
+	/*const auto kPositionLocation = gl::GetUniformLocation(program, "uPosition");
+	gl::Uniform2f(kPositionLocation, position.x, position.y);*/
+
 
 	/*GLCall(glBindVertexArray(0));
 	GLCall(glUseProgram(0));
@@ -164,29 +267,42 @@ int main(void)
 	float r = 0.0f;
 	float increment = 0.05f;
 
+	float x = 0.0f;
+	float y = 0.0f;
+
 	std::cout << glGetString(GL_VERSION) << std::endl;
+
 
 	/* L oop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
+		updateInput(window, x, y);
+		transferCoordinates(x, y);
 		/* Render here */
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 		GLCall(glUseProgram(shader));  
-		GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
 
+		GLCall(const auto kSizeLocation = glGetUniformLocation(shader, "uSize"));
+		GLCall(glUniform2f(kSizeLocation, 0.3f, 0.3f));
+
+		GLCall(const auto kPositionLocation = glGetUniformLocation(shader, "uPosition"));
+		glUniform2f(kPositionLocation, x, y);
+
+		GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+		GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
 
 		va.Bind();
 		ib.Bind();	
 		
 		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
-		if (r > 1.0f)
+		/*if (r > 1.0f)
 			increment = -0.05f;
 		else if (r < 0.0f)
 			increment = 0.05f;
 
-		r += increment;
+		r += increment;*/
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
