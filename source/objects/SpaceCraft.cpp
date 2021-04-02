@@ -9,7 +9,7 @@
 #include "SpaceCraft.h"
 #include "../source/Renderer.h"
 
-void updateInput(GLFWwindow* window, float forward, float rotation)
+void updateInput(GLFWwindow* window, float& forward, float& rotation)
 {
 	bool lockPosition;
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
@@ -37,7 +37,7 @@ void updateInput(GLFWwindow* window, float forward, float rotation)
 	}
 }
 
-Position updatePosition(float forward, float rotation, Position pos)
+Position updatePosition(float& forward, float& rotation, Position& pos)
 {
 	pos.x += forward * cos(rotation) - 0.0f * sin(rotation);
 	pos.y += forward * sin(rotation) + 0.0f * cos(rotation);
@@ -56,13 +56,12 @@ SpaceCraft::~SpaceCraft()
 {
 }
 
-VertexArray SpaceCraft::Bind() const
+void SpaceCraft::Bind()
 {
 	unsigned int vao;
 	GLCall(glGenVertexArrays(1, &vao));
 	GLCall(glBindVertexArray(vao));
 
-	VertexArray va;
 	VertexBuffer vb(positions, 4 * 5 * sizeof(float));
 	VertexBufferLayout layout;
 	layout.Push<float>(2);
@@ -73,7 +72,6 @@ VertexArray SpaceCraft::Bind() const
 
 	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
 	ASSERT(location != -1);	
-	return va;
 }
 
 void SpaceCraft::Unbind() const
@@ -81,30 +79,36 @@ void SpaceCraft::Unbind() const
 	GLCall(glDeleteProgram(shader));
 }
 
-void SpaceCraft::GameTick(VertexArray va) const
+void SpaceCraft::GameTick()
 {
 	updateInput(window, forward, rotation);
 	/* Render here */	
+
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 	GLCall(glUseProgram(shader));
 
 	GLCall(const auto kSizeLocation = glGetUniformLocation(shader, "uSize"));
 	GLCall(glUniform2f(kSizeLocation, 0.3f, 0.3f));
 
-	Position rotatedPos = updatePosition(forward, rotation, pos);
+	updatePosition(forward, rotation, pos);
 	GLCall(const auto kPositionLocation = glGetUniformLocation(shader, "uPosition"));
-	GLCall(glUniform2f(kPositionLocation, rotatedPos.x, rotatedPos.y));
+	GLCall(glUniform2f(kPositionLocation, pos.x, pos.y));
 
 	GLCall(const auto kRotateLocation = glGetUniformLocation(shader, "uRotate"));
 	GLCall(glUniform1f(kRotateLocation, rotation));
 
-	va.Bind();
-
-	/*GLCall(const auto kRotationLocation = glGetUniformLocation(shader, "uRotation"));
-	glUniform2f(kRotationLocation, a[0], yR);*/
 
 	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
 	GLCall(glUniform4f(location, 1.0f, 1.0f, 1.0f, 1.0f));
 
+	va.Bind();
+
 	GLCall(glDrawArrays(GL_LINES, 0, 10));
+
+	/* Swap front and back buffers */
+	glfwSwapBuffers(window);
+
+	/* Poll for and process events */
+	glfwPollEvents();
 }

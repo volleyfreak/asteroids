@@ -27,12 +27,13 @@ public:
 	Position pos;
 	GLFWwindow* window;
 	unsigned int shader;
+	VertexArray va;
 
 	SpaceCraft(GLFWwindow* w);
 	~SpaceCraft();
 
-	VertexArray Bind() const;
+	void Bind();
 	void Unbind() const;
 
-	void GameTick(VertexArray va) const;
+	void GameTick();
 };

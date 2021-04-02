@@ -44,21 +44,14 @@ int main(void)
 		std::cout << "Error!" << std::endl;
 	}
 	SpaceCraft spaceCraft = SpaceCraft(window);
-	VertexArray va = spaceCraft.Bind();
+	spaceCraft.Bind();
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	/* L oop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
-	{		
-		GLCall(glClear(GL_COLOR_BUFFER_BIT));
-
-		spaceCraft.GameTick(va);
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
-
-		/* Poll for and process events */
-		glfwPollEvents();
+	{	
+		spaceCraft.GameTick();		
 	}	
 
 	glfwTerminate();
