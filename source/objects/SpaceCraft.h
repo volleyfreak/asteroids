@@ -1,8 +1,11 @@
 #pragma once
+#include "BasicObject.h"
 
 class SpaceCraft
 {
 private:
+	
+public:
 	float positions[20] = {
 		-0.25f, 0.2f,
 		0.25f,  0.0f,
@@ -19,16 +22,17 @@ private:
 		-0.20f, 0.1f,
 		-0.20f, -0.1f,
 	};
-	float forward = 0.0f;
-	float rotation = 0.0f;
-	Position pos = { 0.1f, 0.0f };
+	float forward;
+	float rotation;
+	Position pos;
+	GLFWwindow* window;
+	unsigned int shader;
 
-public:
-	SpaceCraft();
+	SpaceCraft(GLFWwindow* w);
 	~SpaceCraft();
 
-	void Bind() const;
+	VertexArray Bind() const;
 	void Unbind() const;
 
-	void GameTick() const;
+	void GameTick(VertexArray va) const;
 };
