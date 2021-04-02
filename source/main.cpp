@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <tuple>
+#include <math.h>
 
 #include "constants/constants.h"
 #include "Renderer.h"
@@ -163,31 +165,61 @@ public:
 	}*/
 //};
 
-void updateInput(GLFWwindow* window, float& x, float& y)
+void updateInput(GLFWwindow* window, float& forward, float& rotation)
 {
+	bool lockPosition;
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
-		y += 0.01f;
+	{
+		forward += 0.0001f;
+		lockPosition = false;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
-		y -= 0.01f;
+	{
+		forward -= 0.0001f;
+		lockPosition = false;
+	}
 
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
-		x += 0.01f;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		rotation -= 0.05f;
+		lockPosition = true;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
-		x -= 0.01f;
+	{
+		rotation += 0.05f;
+		lockPosition = true;
+	}
+
+	if (forward > 1)
+		forward = -1;
+	if (forward < -1)
+		forward = 1;
 }
 
 void transferCoordinates(float& x, float& y) 
 {
-	if (y > 1)
-		y = -1;
-	if (y < -1)
-		y = 1;
 	if (x > 1)
 		x = -1;
 	if (x < -1)
 		x = 1;
+	if (y > 1)
+		y = -1;
+	if (y < -1)
+		y = 1;
+}
+
+struct Position {
+	float x;
+	float y; 
+};
+
+void updatePosition(float& forward, float& rotation, Position& pos)
+{
+	pos.x += forward * cos(rotation) - 0.0f * sin(rotation);
+	pos.y += forward * sin(rotation) + 0.0f * cos(rotation);
+	transferCoordinates(pos.x, pos.y);
 }
 
 int main(void)
@@ -219,29 +251,61 @@ int main(void)
 		std::cout << "Error!" << std::endl;
 	}
 
-	float positions[8] = {
-		-0.5f, -0.5,  // 0
-		-0.5f,  0.5f, // 1
-		 0.5f,  0.5f, // 2
-		 0.5f, -0.5f, // 3
+	//float positions[8] = {
+	//	-0.5f, -0.5,  // 0
+	//	-0.5f,  0.5f, // 1
+	//	 0.5f,  0.5f, // 2
+	//	 0.5f, -0.5f, // 3
+	//};
+	/*float positions[20] = {
+		-0.25f, -0.05f,
+		0.5f,  0.0f,
+
+		0.0f, -0.2f,
+		0.5f,  0.0f,
+
+		0.0f,  -0.2f,
+		0.05f, -0.1f,
+
+		0.0f,  0.2f,
+		0.05f, 0.1f,
+
+		0.05f, 0.1f,
+		0.05f, -0.1f,
+	};*/
+
+	float positions[20] = {
+		-0.25f, 0.2f,  
+		0.25f,  0.0f, 
+
+		-0.25f, -0.2f,
+		0.25f,  0.0f,
+
+		-0.25f,  -0.2f,
+		-0.20f, -0.1f,
+
+		-0.25f,  0.2f,
+		-0.20f, 0.1f,
+
+		-0.20f, 0.1f,
+		-0.20f, -0.1f,
 	};
 
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
+	/*unsigned int indices[] = {
+		0, 1, 
+		0, 1,
+		1, 2
+	};*/
 
 	unsigned int vao;
 	GLCall(glGenVertexArrays(1, &vao));
 	GLCall(glBindVertexArray(vao));
 
 	VertexArray va;
-	VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+	VertexBuffer vb(positions, 4 * 5 * sizeof(float));
 	VertexBufferLayout layout;
 	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
-
-	IndexBuffer ib(indices, 6);
 
 	ShaderProgramSource source = ParseShader("res/shaders/basic.shader");
 
@@ -250,25 +314,10 @@ int main(void)
 	
 	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
 	ASSERT(location != -1);
-	//GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f));
 
-	
-
-	/*const auto kPositionLocation = gl::GetUniformLocation(program, "uPosition");
-	gl::Uniform2f(kPositionLocation, position.x, position.y);*/
-
-
-	/*GLCall(glBindVertexArray(0));
-	GLCall(glUseProgram(0));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));*/
-	
-
-	float r = 0.0f;
-	float increment = 0.05f;
-
-	float x = 0.0f;
-	float y = 0.0f;
+	float forward = 0.0f;
+	float rotation = 0.0f;
+	Position pos = { 0.1f, 0.0f };
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -276,8 +325,8 @@ int main(void)
 	/* L oop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		updateInput(window, x, y);
-		transferCoordinates(x, y);
+		updateInput(window, forward, rotation);
+		//transferCoordinates(x);
 		/* Render here */
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
@@ -286,23 +335,24 @@ int main(void)
 		GLCall(const auto kSizeLocation = glGetUniformLocation(shader, "uSize"));
 		GLCall(glUniform2f(kSizeLocation, 0.3f, 0.3f));
 
+		updatePosition(forward, rotation, pos);
+
 		GLCall(const auto kPositionLocation = glGetUniformLocation(shader, "uPosition"));
-		glUniform2f(kPositionLocation, x, y);
+		GLCall(glUniform2f(kPositionLocation, pos.x, pos.y));
+		
+		GLCall(const auto kRotateLocation = glGetUniformLocation(shader, "uRotate"));
+		GLCall(glUniform1f(kRotateLocation, rotation));
+
+
+		/*GLCall(const auto kRotationLocation = glGetUniformLocation(shader, "uRotation"));
+		glUniform2f(kRotationLocation, a[0], yR);*/
 
 		GLCall(int location = glGetUniformLocation(shader, "u_Color"));
-		GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+		GLCall(glUniform4f(location, 1.0f, 1.0f, 1.0f, 1.0f));
+
 
 		va.Bind();
-		ib.Bind();	
-		
-		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-
-		/*if (r > 1.0f)
-			increment = -0.05f;
-		else if (r < 0.0f)
-			increment = 0.05f;
-
-		r += increment;*/
+		GLCall(glDrawArrays(GL_LINES, 0, 10));
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

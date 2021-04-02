@@ -5,10 +5,17 @@ layout(location = 0) in vec2 aPosition;
 
 uniform vec2 uSize;
 uniform vec2 uPosition;
+uniform float uRotate;
+
+mat2 rotate2d(float _angle) {
+	return mat2(cos(_angle), -sin(_angle),
+		sin(_angle), cos(_angle));
+}
 
 void main()
 {
-	vec2 position = (aPosition * uSize) + uPosition;
+
+	vec2 position = (aPosition * rotate2d(uRotate) * uSize) + uPosition;
 	gl_Position = vec4(position, 0.0, 1.0);
 };
 
