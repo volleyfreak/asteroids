@@ -43,15 +43,28 @@ int main(void)
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Error!" << std::endl;
 	}
-	SpaceCraft spaceCraft = SpaceCraft(window);
+	Shader shader = Shader("res/shaders/basic.shader");
+
+	SpaceCraft spaceCraft = SpaceCraft(window, shader, { 0.0f, 0.0f });
+
 	spaceCraft.Bind();
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	/* L oop until the user closes the window */
+	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{	
-		spaceCraft.GameTick();		
+		/* Render here */
+
+		GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+		spaceCraft.GameTick();
+
+		/* Swap front and back buffers */
+		glfwSwapBuffers(window);
+
+		/* Poll for and process events */
+		glfwPollEvents();
 	}	
 
 	glfwTerminate();

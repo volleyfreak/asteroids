@@ -7,7 +7,6 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "SpaceCraft.h"
-#include "../source/Renderer.h"
 
 void updateInput(GLFWwindow* window, float& forward, float& rotation)
 {
@@ -45,11 +44,9 @@ Position updatePosition(float& forward, float& rotation, Position& pos)
 	return pos;
 }
 
-SpaceCraft::SpaceCraft(GLFWwindow* w)
-	:window(w), forward(0.1f), rotation(0.0f), pos({ 0.0f, 0.0f })
+SpaceCraft::SpaceCraft(GLFWwindow* w, Shader& s, Position p)
+	:window(w), shader{ s }, pos {p}
 {
-	ShaderProgramSource source = ParseShader("res/shaders/basic.shader");
-	shader = CreateShader(source.VertexSource, source.FragmentSource);
 }
 
 SpaceCraft::~SpaceCraft()
@@ -67,48 +64,28 @@ void SpaceCraft::Bind()
 	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
-	
-	GLCall(glUseProgram(shader));
-
-	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
-	ASSERT(location != -1);	
+	shader.Bind();
 }
 
-void SpaceCraft::Unbind() const
+void SpaceCraft::Unbind()
 {
-	GLCall(glDeleteProgram(shader));
+	va.Unbind();
+	shader.Unbind();
 }
 
 void SpaceCraft::GameTick()
 {
 	updateInput(window, forward, rotation);
-	/* Render here */	
-
-	GLCall(glClear(GL_COLOR_BUFFER_BIT));
-
-	GLCall(glUseProgram(shader));
-
-	GLCall(const auto kSizeLocation = glGetUniformLocation(shader, "uSize"));
-	GLCall(glUniform2f(kSizeLocation, 0.3f, 0.3f));
-
 	updatePosition(forward, rotation, pos);
-	GLCall(const auto kPositionLocation = glGetUniformLocation(shader, "uPosition"));
-	GLCall(glUniform2f(kPositionLocation, pos.x, pos.y));
-
-	GLCall(const auto kRotateLocation = glGetUniformLocation(shader, "uRotate"));
-	GLCall(glUniform1f(kRotateLocation, rotation));
-
-
-	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
-	GLCall(glUniform4f(location, 1.0f, 1.0f, 1.0f, 1.0f));
+	
+	shader.Bind(); 
+	shader.SetUniform2f("uSize", 0.1f, 0.1f);
+	shader.SetUniform2f("uPosition", pos.x, pos.y);
+	shader.SetUniform1f("uRotate", rotation);
+	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	va.Bind();
 
 	GLCall(glDrawArrays(GL_LINES, 0, 10));
-
-	/* Swap front and back buffers */
-	glfwSwapBuffers(window);
-
-	/* Poll for and process events */
-	glfwPollEvents();
 }
+
