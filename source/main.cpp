@@ -12,6 +12,7 @@
 #include "constants/constants.h"
 #include "Renderer.h"
 #include "objects/SpaceCraft.h"
+#include "objects/Asteroid.h"
 
 
 
@@ -45,9 +46,18 @@ int main(void)
 	}
 	Shader shader = Shader("res/shaders/basic.shader");
 
+	srand((unsigned int)time(0));
 	SpaceCraft spaceCraft = SpaceCraft(window, shader, { 0.0f, 0.0f });
+	Asteroid asteroid = Asteroid(shader);
+	Asteroid asteroid2 = Asteroid(shader);
+	Asteroid asteroid3 = Asteroid(shader);
+	Asteroid asteroid4 = Asteroid(shader);
 
 	spaceCraft.Bind();
+	asteroid.Bind();
+	asteroid2.Bind();
+	asteroid3.Bind();
+	asteroid4.Bind();
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -59,6 +69,10 @@ int main(void)
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 		spaceCraft.GameTick();
+		asteroid.GameTick();
+		asteroid2.GameTick();
+		asteroid3.GameTick();
+		asteroid4.GameTick();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

@@ -135,7 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="common\shader.cpp" />
+    <ClCompile Include="source\objects\Asteroid.cpp" />
     <ClCompile Include="source\Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -147,9 +147,9 @@
     <ClCompile Include="source\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\shader.hpp" />
     <ClInclude Include="source\constants\constants.h" />
     <ClInclude Include="source\IndexBuffer.h" />
+    <ClInclude Include="source\objects\Asteroid.h" />
     <ClInclude Include="source\objects\BasicObject.h" />
     <ClInclude Include="source\Renderer.h" />
     <ClInclude Include="source\objects\SpaceCraft.h" />

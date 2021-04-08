@@ -1,12 +1,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <math.h>
-
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
 #include "SpaceCraft.h"
+
+SpaceCraft::SpaceCraft(GLFWwindow* w, Shader& s, asteroids::Position p)
+	:window(w), shader{ s }, pos{ p }
+{
+}
+
+SpaceCraft::~SpaceCraft()
+{
+}
 
 void updateInput(GLFWwindow* window, float& forward, float& rotation)
 {
@@ -36,23 +40,6 @@ void updateInput(GLFWwindow* window, float& forward, float& rotation)
 	}
 }
 
-Position updatePosition(float& forward, float& rotation, Position& pos)
-{
-	pos.x += forward * cos(rotation) - 0.0f * sin(rotation);
-	pos.y += forward * sin(rotation) + 0.0f * cos(rotation);
-	transferCoordinates(pos.x, pos.y);
-	return pos;
-}
-
-SpaceCraft::SpaceCraft(GLFWwindow* w, Shader& s, Position p)
-	:window(w), shader{ s }, pos {p}
-{
-}
-
-SpaceCraft::~SpaceCraft()
-{
-}
-
 void SpaceCraft::Bind()
 {
 	unsigned int vao;
@@ -76,7 +63,7 @@ void SpaceCraft::Unbind()
 void SpaceCraft::GameTick()
 {
 	updateInput(window, forward, rotation);
-	updatePosition(forward, rotation, pos);
+	asteroids::BasicObject::updatePosition(forward, rotation, pos);
 	
 	shader.Bind(); 
 	shader.SetUniform2f("uSize", 0.1f, 0.1f);
