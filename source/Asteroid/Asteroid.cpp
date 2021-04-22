@@ -1,8 +1,8 @@
 #include "Asteroid.h"
 #pragma once
 
-Asteroid::Asteroid(Shader& s)
-	:shader{ s }, pos{ randomF(), randomF() }, rotation (randomF(1.5f)), forward( randomF(0.005f))
+Asteroid::Asteroid(Shader& s, float direction)
+	:shader{ s }, pos{ randomF(), randomF() }, rotation(0.0f), forward{ randomF(direction), randomF(direction) }
 {
 }
 
@@ -33,10 +33,10 @@ void Asteroid::Unbind()
 
 void Asteroid::GameTick()
 {
-	updatePosition(forward, rotation, pos);
+	pos = updatePosition(forward, pos);
 
 	shader.Bind();
-	shader.SetUniform2f("uSize", 0.03f, 0.03f);
+	shader.SetUniform2f("uSize", size, size);
 	shader.SetUniform2f("uPosition", pos.x, pos.y);
 	shader.SetUniform1f("uRotate", rotation);
 	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);

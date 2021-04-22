@@ -14,7 +14,6 @@ mat2 rotate2d(float _angle) {
 
 void main()
 {
-
 	vec2 position = (aPosition * rotate2d(uRotate) * uSize) + uPosition;
 	gl_Position = vec4(position, 0.0, 1.0);
 };

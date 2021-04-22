@@ -1,11 +1,11 @@
 #pragma once
-#include "BasicObject.h"
+#include "../BaseView.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "../source/Shader.h"
 
-class SpaceCraft: public asteroids::BasicObject
+class SpaceCraft: public asteroids::BaseView
 {
 private:
 	float positions[20] = {
@@ -24,15 +24,16 @@ private:
 		-0.20f, 0.1f,
 		-0.20f, -0.1f,
 	};
-	float forward = 0.0f;
 	float rotation = 0.0f;
-	asteroids::Position pos = { 0.0f, 0.0f };
+	asteroids::Vector forward = { 0.0f, 0.0f };
 	GLFWwindow* window;
 	VertexArray va;
 	Shader& shader;
 	
 public:
-	SpaceCraft(GLFWwindow* w, Shader& s, asteroids::Position p);
+	float size = 0.1f;
+	asteroids::Vector pos = { 0.0f, 0.0f };
+	SpaceCraft(GLFWwindow* w, Shader& s, asteroids::Vector p);
 	~SpaceCraft();
 
 	void Bind();

@@ -11,8 +11,9 @@
 #include "VertexArray.h"
 #include "constants/constants.h"
 #include "Renderer.h"
-#include "objects/SpaceCraft.h"
-#include "objects/Asteroid.h"
+#include "SpaceCraft/SpaceCraft.h"
+#include "Asteroid/Asteroid.h"
+#include "BaseView.h"
 
 
 
@@ -29,7 +30,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(ASTEROIDS_WIN_HEIGHT, ASTEROIDS_WIN_WIDTH, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(ASTEROIDS_WIN_HEIGHT, ASTEROIDS_WIN_WIDTH, "Asteroids", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -48,31 +49,38 @@ int main(void)
 
 	srand((unsigned int)time(0));
 	SpaceCraft spaceCraft = SpaceCraft(window, shader, { 0.0f, 0.0f });
-	Asteroid asteroid = Asteroid(shader);
-	Asteroid asteroid2 = Asteroid(shader);
-	Asteroid asteroid3 = Asteroid(shader);
-	Asteroid asteroid4 = Asteroid(shader);
+	Asteroid asteroid1 = Asteroid(shader, 0.004f);
+	Asteroid asteroid2 = Asteroid(shader, -0.004f);
+	Asteroid asteroid3 = Asteroid(shader, 0.008f);
+	Asteroid asteroid4 = Asteroid(shader, -0.008f);
+
+	Asteroid asteroids[4] = { asteroid1, asteroid2, asteroid3, asteroid4 };
 
 	spaceCraft.Bind();
-	asteroid.Bind();
-	asteroid2.Bind();
-	asteroid3.Bind();
-	asteroid4.Bind();
+	for (Asteroid& asteroid : asteroids) {		
+		asteroid.Bind();
+	}
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
+	bool gameIsRunning = true;
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && gameIsRunning)
 	{	
 		/* Render here */
 
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 		spaceCraft.GameTick();
-		asteroid.GameTick();
-		asteroid2.GameTick();
-		asteroid3.GameTick();
-		asteroid4.GameTick();
+
+		for (Asteroid& asteroid: asteroids){
+			asteroid.GameTick();
+			if (asteroids::isCollision(spaceCraft.pos, 0.01f, asteroid.pos, 0.1f)) {
+				//asteroid.Unbind();
+				//gameIsRunning = false;
+				std::cout << "spacecraft: " << spaceCraft.pos.x << " y: " << spaceCraft.pos.y << "\n Asteroid: " << asteroid.pos.x << " " << asteroid.pos.y << ":" << std::endl;
+			}			
+		}		
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
