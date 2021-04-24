@@ -28,6 +28,12 @@ bool AsteroidsController::GameTick()
 	spaceCraftView.GameTick(&spaceCraftModel, &spaceCraftModel.pos, 10);
 
 
+	for (auto& bulletsmv : bullets)
+	{		
+		auto pos = updatePosition(&bulletsmv.first->forward, &bulletsmv.first->pos);
+		bulletsmv.first->tickCount++;
+		bulletsmv.second->BulletTick(bulletsmv.first, pos, 1);
+	}
 	for (auto& asteroidmv : asteroids)
 	{		
 		auto pos = updatePosition(&asteroidmv.first->forward, &asteroidmv.first->pos);
@@ -35,22 +41,10 @@ bool AsteroidsController::GameTick()
 		if (isCollision(&spaceCraftModel.pos, 0.01f, &asteroidmv.first->pos, 0.1f)) {
 			//asteroid.Unbind();
 			//gameIsRunning = false;
+			//todo: Collision detection and remove bullets and asteroids : https://thispointer.com/different-ways-to-erase-delete-an-element-from-a-set-in-c/#:~:text=Removing%20element%20from%20set%20By%20Value,erase%20(const%20value_type%26%20val)%3B
 			std::cout << "spacecraft: " << &spaceCraftModel.pos.x << " y: " << &spaceCraftModel.pos.y << "\n Asteroid: " << &asteroidmv.first->pos.x << " " << &asteroidmv.first->pos.y << ":" << std::endl;
 		}
 	}
-
-	
-	//GLCall(glDrawArrays(GL_LINES, 0, 20));
-	// 
-	// 	   
-	//for (AsteroidModel& asteroid : asteroids) {
-	//	asteroid.GameTick();
-	//	if (asteroids::isCollision(spaceCraft.pos, 0.01f, asteroid.pos, 0.1f)) {
-	//		//asteroid.Unbind();
-	//		//gameIsRunning = false;
-	//		std::cout << "spacecraft: " << spaceCraft.pos.x << " y: " << spaceCraft.pos.y << "\n Asteroid: " << asteroid.pos.x << " " << asteroid.pos.y << ":" << std::endl;
-	//	}
-	//}
 	return true;
 }
 

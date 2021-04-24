@@ -4,7 +4,8 @@
 class BulletModel : public GameModel
 {
 public:
-	BulletModel();
+	unsigned int tickCount = 0;
+	BulletModel(asteroids::Coords pos, asteroids::Coords forward);
 	~BulletModel();
 };
 

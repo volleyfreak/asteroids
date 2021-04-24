@@ -1,9 +1,6 @@
-﻿  AsteroidModel.cpp
-  AsteroidsController.cpp
+﻿  AsteroidsController.cpp
 C:\source\uni\openGl\Asteroids\source\AsteroidsController.cpp(11,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  AsteroidsView.cpp
   BulletModel.cpp
-  SpaceCraftModel.cpp
   main.cpp
   Generating Code...
   Asteroids.vcxproj -> C:\source\uni\openGl\Asteroids\x64\Debug\Asteroids.exe

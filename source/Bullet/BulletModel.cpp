@@ -1,15 +1,15 @@
 #include "BulletModel.h"
 
-BulletModel::BulletModel()
+BulletModel::BulletModel(asteroids::Coords pos, asteroids::Coords forward)
 	: GameModel(2)
 {
 	positions = {
 		0.0f, 0.0f,
 	};
-	this->pos = { asteroids::randomF(), asteroids::randomF() };
+	this->pos = pos;
 	this->rotation = 0.0f;
-	this->size = size;
-	this->forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) };
+	this->size = 1.0f;
+	this->forward = forward;
 }
 BulletModel::~BulletModel()
 {

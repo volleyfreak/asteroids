@@ -9,7 +9,6 @@ VertexArray::VertexArray()
 
 VertexArray::~VertexArray()
 {
-	//todo: Why is this called so often?
 	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 

@@ -2,7 +2,7 @@
 #pragma once
 
 AsteroidModel::AsteroidModel(float size)
-	: GameModel(10)
+	: GameModel(40)
 {
 	bufferSize = 40;
 	positions = {

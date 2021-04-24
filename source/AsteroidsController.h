@@ -13,6 +13,7 @@
 #include "../source/Shader.h"
 #include <Asteroid/AsteroidModel.h>
 #include <SpaceCraft/SpaceCraftModel.h>
+#include <Bullet/BulletModel.h>
 #include <AsteroidsView.h>
 
 class AsteroidsController 
@@ -24,20 +25,18 @@ class AsteroidsController
 	//		return true; // comparision logic
 	//	}
 	//};
+	bool shooted = false;
 private:
 	Shader shader;
 	SpaceCraftModel spaceCraftModel;
 	AsteroidsView spaceCraftView;
 	std::set<std::pair<AsteroidModel*, AsteroidsView*>> asteroids;
-	//Bullets bullets[];
+	std::set<std::pair<BulletModel*, AsteroidsView*>> bullets;
 	GLFWwindow* window;
 
 public:
 	AsteroidsController(GLFWwindow* w);
 	~AsteroidsController();
-
-	/*void Bind();
-	void Unbind();*/
 
 	bool GameTick();
 
@@ -53,7 +52,7 @@ public:
 			y = 1;
 	}	
 
-	asteroids::Vector* updatePosition(asteroids::Vector* forward, asteroids::Vector* pos)
+	asteroids::Coords* updatePosition(asteroids::Coords* forward, asteroids::Coords* pos)
 	{
 		/*pos.x += forward.x * cos(rotation) - forward.y * sin(rotation);
 		pos.y += forward.x * sin(rotation) + forward.y * cos(rotation);*/
@@ -63,7 +62,7 @@ public:
 		return pos;
 	}
 
-	bool isCollision(asteroids::Vector* pos1, float scale1, asteroids::Vector* pos2, float scale2) {
+	bool isCollision(asteroids::Coords* pos1, float scale1, asteroids::Coords* pos2, float scale2) {
 		//move coordinate system for collision detection
 
 		float x = pos1->x - pos2->x;
@@ -73,7 +72,7 @@ public:
 		return distance <= scale1 + scale2;
 	}
 
-	void updateInput(GLFWwindow* window, asteroids::Vector& forward, float& rotation) //Controller
+	void updateInput(GLFWwindow* window, asteroids::Coords& forward, float& rotation) //Controller
 	{
 		forward.x *= 0.997f;
 		forward.y *= 0.997f;
@@ -96,9 +95,25 @@ public:
 			rotation += 0.05f;
 		}
 
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+		{
+			this->shooted = false;
+		}
+
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			//shoot bullet
+			if (!shooted) {
+				createBullet();
+				shooted = true;
+			}
+			
 		}
+	}
+	void createBullet() {
+		float x = 0.01f * cos(spaceCraftModel.rotation);
+		float y = 0.01f * sin(spaceCraftModel.rotation);
+		
+		auto bullet = new BulletModel(spaceCraftModel.pos, { x, y });
+		bullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));
 	}
 };

@@ -6,7 +6,7 @@
 #include <sstream>
 
 namespace asteroids {
-	struct Vector {
+	struct Coords {
 		float x;
 		float y;
 	};	

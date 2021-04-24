@@ -12,6 +12,7 @@ public:
 	AsteroidsView(GameModel* gameModel, Shader& s);
 	~AsteroidsView();
 
-	void GameTick(GameModel* spaceCraftModel, asteroids::Vector* pos, int lines);
+	void GameTick(GameModel* spaceCraftModel, asteroids::Coords* pos, int lines);
+	void BulletTick(GameModel* spaceCraftModel, asteroids::Coords* pos, int lines);
 
 };
