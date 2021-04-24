@@ -9,13 +9,14 @@ VertexArray::VertexArray()
 
 VertexArray::~VertexArray()
 {
+	//todo: Why is this called so often?
 	GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
-	Bind();
 	vb.Bind();
+	Bind();	
 	const auto& elements = layout.GetElements();
 	unsigned int offset = 0;
 

@@ -1,17 +1,19 @@
 #pragma once
 
 
-#include "BaseView.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
-#include "../source/Shader.h"
 
-class Asteroid: public asteroids::BaseView
+#include "../GameModel.h"
+#include "../source/Shader.h"
+#include "Structs.h"
+
+class AsteroidModel: public GameModel
 {
 private:
 	
-	float positions[40] = {
+	/*float positions[40] = {
 		0.0f, 2.0f, 
 		1.5f, 3.0f,
 
@@ -46,16 +48,11 @@ private:
 	float rotation = 0.0f;
 	
 	VertexArray va;
-	Shader& shader;
+	Shader& shader;*/
 
 public:
-	asteroids::Vector pos = { 0.0f, 0.0f };
-	float size = 0.03f;
-	Asteroid(Shader& s, float direction);
-	~Asteroid();
-
-	void Bind();
-	void Unbind();
-
-	void GameTick();
+	/*asteroids::Vector pos = { 0.0f, 0.0f };
+	float size = 0.03f;*/
+	AsteroidModel(float size);
+	~AsteroidModel();
 };

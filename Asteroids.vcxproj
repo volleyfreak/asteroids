@@ -135,27 +135,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Bullet\BulletModel.cpp" />
     <ClCompile Include="source\AsteroidsController.cpp" />
-    <ClCompile Include="source\Asteroid\Asteroid.cpp" />
-    <ClCompile Include="source\SpaceCraft\SpaceCraftController.h" />
+    <ClCompile Include="source\Asteroid\AsteroidModel.cpp" />
     <ClCompile Include="source\Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="source\IndexBuffer.cpp" />
-    <ClCompile Include="source\SpaceCraft\SpaceCraft.cpp" />
+    <ClCompile Include="source\SpaceCraft\SpaceCraftModel.cpp" />
     <ClCompile Include="source\Renderer.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\AsteroidsView.cpp" />
     <ClCompile Include="source\VertexBuffer.cpp" />
     <ClCompile Include="source\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Bullet\BulletModel.h" />
+    <ClInclude Include="source\AsteroidsController.h" />
+    <ClInclude Include="source\Asteroid\AsteroidModel.h" />
     <ClInclude Include="source\constants\constants.h" />
+    <ClInclude Include="source\GameModel.h" />
     <ClInclude Include="source\IndexBuffer.h" />
-    <ClInclude Include="source\Asteroid\Asteroid.h" />
-    <ClInclude Include="source\BaseView.h" />
-    <ClInclude Include="source\SpaceCraft\SpaceCraftView.h" />
+    <ClInclude Include="source\Structs.h" />
+    <ClInclude Include="source\AsteroidsView.h" />
     <ClInclude Include="source\Renderer.h" />
-    <ClInclude Include="source\SpaceCraft\SpaceCraft.h" />
+    <ClInclude Include="source\SpaceCraft\SpaceCraftModel.h" />
     <ClInclude Include="source\Shader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
