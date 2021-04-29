@@ -14,6 +14,7 @@
 #include <Asteroid/AsteroidModel.h>
 #include <SpaceCraft/SpaceCraftModel.h>
 #include <Bullet/BulletModel.h>
+#include <Saucer/BigSaucerModel.h>
 #include <AsteroidsView.h>
 
 class AsteroidsController 
@@ -32,6 +33,7 @@ private:
 	AsteroidsView spaceCraftView;
 	std::set<std::pair<AsteroidModel*, AsteroidsView*>> asteroids;
 	std::set<std::pair<BulletModel*, AsteroidsView*>> bullets;
+	std::pair<BigSaucerModel*, AsteroidsView*> saucer;
 	GLFWwindow* window;
 
 public:
@@ -40,39 +42,30 @@ public:
 
 	bool GameTick();
 
-	void transferCoordinates(float& x, float& y)
-	{
-		if (x > 1)
-			x = -1;
-		if (x < -1)
-			x = 1;
-		if (y > 1)
-			y = -1;
-		if (y < -1)
-			y = 1;
-	}	
+	//todo: move functions to cpp file
+	void TransferCoordinates(float& x, float& y);
 
-	asteroids::Coords* updatePosition(asteroids::Coords* forward, asteroids::Coords* pos)
+	asteroids::Coords* UpdatePosition(asteroids::Coords* forward, asteroids::Coords* pos)
 	{
 		/*pos.x += forward.x * cos(rotation) - forward.y * sin(rotation);
 		pos.y += forward.x * sin(rotation) + forward.y * cos(rotation);*/
 		pos->x += forward->x;
 		pos->y += forward->y;
-		transferCoordinates(pos->x, pos->y);
+		TransferCoordinates(pos->x, pos->y);
 		return pos;
 	}
 
-	bool isCollision(asteroids::Coords* pos1, float scale1, asteroids::Coords* pos2, float scale2) {
+	bool IsCollision(asteroids::Coords pos1, float scale1, asteroids::Coords pos2, float scale2) {
 		//move coordinate system for collision detection
 
-		float x = pos1->x - pos2->x;
-		float y = pos1->y - pos2->y;
+		float x = pos1.x - pos2.x;
+		float y = pos1.y - pos2.y;
 
 		float distance = sqrt((x * x) + (y * y));
 		return distance <= scale1 + scale2;
 	}
 
-	void updateInput(GLFWwindow* window, asteroids::Coords& forward, float& rotation) //Controller
+	void UpdateInput(GLFWwindow* window, asteroids::Coords& forward, float& rotation) 
 	{
 		forward.x *= 0.997f;
 		forward.y *= 0.997f;
@@ -103,17 +96,31 @@ public:
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			if (!shooted) {
-				createBullet();
+				spaceCraftModel.bulletCount = CreateBullet(spaceCraftModel.pos, rotation, spaceCraftModel.bulletCount, spaceCraftModel.maxBulletCount);
 				shooted = true;
 			}
 			
 		}
 	}
-	void createBullet() {
-		float x = 0.01f * cos(spaceCraftModel.rotation);
-		float y = 0.01f * sin(spaceCraftModel.rotation);
+	void CreateAsteroid(asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.05f, unsigned int killCount = 0) {
+		auto asteroid = new AsteroidModel(pos, size, killCount);
+		asteroids.insert(std::make_pair(asteroid, new AsteroidsView(asteroid, shader)));
+	}
+
+	unsigned int CreateBullet(asteroids::Coords pos, float rotation, unsigned int bulletCount = 0, unsigned int maxBulletCount = 1) {
+		if (bulletCount < maxBulletCount) {
+			float x = 0.01f * cos(rotation);
+			float y = 0.01f * sin(rotation);
 		
-		auto bullet = new BulletModel(spaceCraftModel.pos, { x, y });
-		bullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));
+			auto bullet = new BulletModel(pos, { x, y });
+			bullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));
+		}
+		return bulletCount++;
+	}
+	void SplitAsteroid(AsteroidModel* asteroid) {
+		if (asteroid->killCount++ <= 1) {
+			CreateAsteroid(asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
+			CreateAsteroid(asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
+		}
 	}
 };

@@ -12,6 +12,8 @@ private:
 	
 	
 public:
+	unsigned int maxBulletCount = 4;
+	unsigned int bulletCount = 0;
 	SpaceCraftModel();
 	~SpaceCraftModel();
 };

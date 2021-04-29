@@ -9,12 +9,13 @@
 #include "../source/Shader.h"
 #include "Structs.h"
 
-class AsteroidModel: public GameModel
+class BigSaucerModel : public GameModel
 {
 private:
 
 public:
-	unsigned int killCount = 0;
-	AsteroidModel(asteroids::Coords pos, float size, unsigned int killCount);
-	~AsteroidModel();
+	unsigned int ticks = 0;
+	bool isActive = true;
+	BigSaucerModel();
+	~BigSaucerModel();
 };

@@ -9,12 +9,11 @@ AsteroidsController::AsteroidsController(GLFWwindow* w)
 	window(w)
 {
 	srand(time(NULL));
-	AsteroidModel *asteroid1 = new AsteroidModel(0.05f);
-	asteroids.insert(std::make_pair(asteroid1, new AsteroidsView(asteroid1, shader)));
-	AsteroidModel* asteroid2 = new AsteroidModel(0.05f);
-	asteroids.insert(std::make_pair(asteroid2, new AsteroidsView(asteroid2, shader)));
-	AsteroidModel* asteroid3 = new AsteroidModel(0.05f);
-	asteroids.insert(std::make_pair(asteroid3, new AsteroidsView(asteroid3, shader)));
+	for (auto i = 0; i < 4; i++) {
+		CreateAsteroid();
+	}
+	auto saucer = new BigSaucerModel();
+	this->saucer = std::make_pair(saucer, new AsteroidsView(saucer, shader));
 }
 
 AsteroidsController::~AsteroidsController()
@@ -23,28 +22,75 @@ AsteroidsController::~AsteroidsController()
 
 bool AsteroidsController::GameTick()
 {
-	updateInput(window, spaceCraftModel.forward, spaceCraftModel.rotation);
-	updatePosition(&spaceCraftModel.forward, &spaceCraftModel.pos);
-	spaceCraftView.GameTick(&spaceCraftModel, &spaceCraftModel.pos, 10);
+	UpdateInput(window, spaceCraftModel.forward, spaceCraftModel.rotation);
+	UpdatePosition(&spaceCraftModel.forward, &spaceCraftModel.pos);
+	this->spaceCraftView.GameTick(spaceCraftModel, spaceCraftModel.pos, 10);
 
-
-	for (auto& bulletsmv : bullets)
-	{		
-		auto pos = updatePosition(&bulletsmv.first->forward, &bulletsmv.first->pos);
-		bulletsmv.first->tickCount++;
-		bulletsmv.second->BulletTick(bulletsmv.first, pos, 1);
+	if (this->saucer.first->isActive) {
+		UpdatePosition(&this->saucer.first->forward, &this->saucer.first->pos);
+		this->saucer.second->GameTick(*this->saucer.first, this->saucer.first->pos, 20);
+		if (this->saucer.first->ticks++ % 100 == 0) {
+			CreateBullet(this->saucer.first->pos, this->saucer.first->rotation);
+		}
 	}
-	for (auto& asteroidmv : asteroids)
+	
+
+	for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
 	{		
-		auto pos = updatePosition(&asteroidmv.first->forward, &asteroidmv.first->pos);
-		asteroidmv.second->GameTick(asteroidmv.first, pos, 20);
-		if (isCollision(&spaceCraftModel.pos, 0.01f, &asteroidmv.first->pos, 0.1f)) {
-			//asteroid.Unbind();
+		auto bullet = *bulletIt++;
+		auto pos = UpdatePosition(&bullet.first->forward, &bullet.first->pos);
+		bullet.second->BulletTick(bullet.first, pos, 1);
+		if (bullet.first->tickCount++ > 180) {
+			bullets.erase(bullet);
+		}		
+	}
+	for (auto it = asteroids.begin(); it != asteroids.end();)
+	{		
+		auto asteroid = *it++;
+		auto pos = UpdatePosition(&asteroid.first->forward, &asteroid.first->pos);
+		asteroid.second->GameTick(*asteroid.first, *pos, 20);		
+		
+		if (IsCollision(spaceCraftModel.pos, 0.03f, asteroid.first->pos, asteroid.first->size * 3)) {
+			SplitAsteroid(asteroid.first);
+			asteroids.erase(asteroid);
 			//gameIsRunning = false;
-			//todo: Collision detection and remove bullets and asteroids : https://thispointer.com/different-ways-to-erase-delete-an-element-from-a-set-in-c/#:~:text=Removing%20element%20from%20set%20By%20Value,erase%20(const%20value_type%26%20val)%3B
-			std::cout << "spacecraft: " << &spaceCraftModel.pos.x << " y: " << &spaceCraftModel.pos.y << "\n Asteroid: " << &asteroidmv.first->pos.x << " " << &asteroidmv.first->pos.y << ":" << std::endl;
+		}
+		if (IsCollision(saucer.first->pos, 0.03f, asteroid.first->pos, asteroid.first->size * 3)) {
+			SplitAsteroid(asteroid.first);
+			asteroids.erase(asteroid);
+			//gameIsRunning = false;
+		}
+	}
+	for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
+	{
+		auto bullet = *bulletIt++;
+		for (auto it = asteroids.begin(); it != asteroids.end();)
+		{
+			auto asteroid = *it++;
+			if (IsCollision(bullet.first->pos, 0.01f, asteroid.first->pos, asteroid.first->size * 3)) {
+				bullets.erase(bullet);
+				SplitAsteroid(asteroid.first);
+				asteroids.erase(asteroid);
+			}
+		}
+		if (IsCollision(saucer.first->pos, saucer.first->size * 2, bullet.first->pos, bullet.first->size * 3)) {
+			//todo: destroy saucer
+			//gameIsRunning = false;
 		}
 	}
 	return true;
 }
+
+void AsteroidsController::TransferCoordinates(float& x, float& y)
+{
+	if (x > 1)
+		x = -1;
+	if (x < -1)
+		x = 1;
+	if (y > 1)
+		y = -1;
+	if (y < -1)
+		y = 1;
+}
+
 
