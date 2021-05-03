@@ -12,8 +12,7 @@ private:
 	
 	
 public:
-	unsigned int maxBulletCount = 4;
-	unsigned int bulletCount = 0;
+	float colisionFactor = 0.03f;
 	SpaceCraftModel();
 	~SpaceCraftModel();
 };

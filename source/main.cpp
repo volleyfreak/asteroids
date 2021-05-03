@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "windows.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -17,6 +18,8 @@
 
 int main(void)
 {
+	PlaySoundW(L"./source/sound/SaucerBackground.wav", NULL, SND_ASYNC);
+
 	GLFWwindow* window;
 
 	/* Initialize the library */

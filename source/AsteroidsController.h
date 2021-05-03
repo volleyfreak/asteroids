@@ -2,11 +2,17 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Structs.h"
-#include "VertexBuffer.h"
+
+#include <cmath>
 #include <list>
 #include <set>
+#include <iostream>
+#include <windows.h>    //used for PlaySound function
+#include <fstream>    //used for file handling
 
+#include "constants/constants.h"
+#include "Structs.h"
+#include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "GameModel.h"
@@ -14,7 +20,8 @@
 #include <Asteroid/AsteroidModel.h>
 #include <SpaceCraft/SpaceCraftModel.h>
 #include <Bullet/BulletModel.h>
-#include <Saucer/BigSaucerModel.h>
+#include <Saucer/SaucerModel.h>
+#include <Sound/SoundController.h>
 #include <AsteroidsView.h>
 
 class AsteroidsController 
@@ -27,14 +34,18 @@ class AsteroidsController
 	//	}
 	//};
 	bool shooted = false;
+	unsigned int gameTick = 1;
 private:
 	Shader shader;
 	SpaceCraftModel spaceCraftModel;
 	AsteroidsView spaceCraftView;
 	std::set<std::pair<AsteroidModel*, AsteroidsView*>> asteroids;
 	std::set<std::pair<BulletModel*, AsteroidsView*>> bullets;
-	std::pair<BigSaucerModel*, AsteroidsView*> saucer;
+	std::set<std::pair<BulletModel*, AsteroidsView*>> saucerBullets;
+	std::set<std::pair<SpaceCraftModel*, AsteroidsView*>> lifes;
+	std::pair<SaucerModel*, AsteroidsView*> saucer;
 	GLFWwindow* window;
+	SoundController sound = SoundController();
 
 public:
 	AsteroidsController(GLFWwindow* w);
@@ -96,7 +107,7 @@ public:
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			if (!shooted) {
-				spaceCraftModel.bulletCount = CreateBullet(spaceCraftModel.pos, rotation, spaceCraftModel.bulletCount, spaceCraftModel.maxBulletCount);
+				CreateBullet(spaceCraftModel.pos, rotation);
 				shooted = true;
 			}
 			
@@ -106,21 +117,49 @@ public:
 		auto asteroid = new AsteroidModel(pos, size, killCount);
 		asteroids.insert(std::make_pair(asteroid, new AsteroidsView(asteroid, shader)));
 	}
+	void CreateBigSaucer() {
+		auto saucer = new SaucerModel();
+		this->saucer = std::make_pair(saucer, new AsteroidsView(saucer, shader));
+	}
+	void CreateSmallSaucer() {
+		auto saucer = new SaucerModel(0.007f);
+		this->saucer = std::make_pair(saucer, new AsteroidsView(saucer, shader));
+	}
 
-	unsigned int CreateBullet(asteroids::Coords pos, float rotation, unsigned int bulletCount = 0, unsigned int maxBulletCount = 1) {
-		if (bulletCount < maxBulletCount) {
-			float x = 0.01f * cos(rotation);
-			float y = 0.01f * sin(rotation);
-		
+	void CreateBullet(asteroids::Coords pos, float rotation) {
+		if (bullets.size() < 4) {
+			float x = 0.02f * cos(rotation);
+			float y = 0.02f * sin(rotation);		
 			auto bullet = new BulletModel(pos, { x, y });
 			bullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));
 		}
-		return bulletCount++;
 	}
+
+	void CreateSaucerBullet(asteroids::Coords pos) {
+		float x = 0.02f * cos(asteroids::randomF(M_PI));
+		float y = 0.02f * sin(asteroids::randomF(M_PI));
+		auto bullet = new BulletModel(pos, { x, y });
+		saucerBullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));		
+	}
+
 	void SplitAsteroid(AsteroidModel* asteroid) {
+		this->sound.playAsteroidDestructionSound();
 		if (asteroid->killCount++ <= 1) {
 			CreateAsteroid(asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
 			CreateAsteroid(asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
 		}
+	}
+
+	void destroySpaceCraft() {
+		this->lifes.erase(std::prev(this->lifes.end()));
+		this->spaceCraftModel.forward = { 0.0f, 0.0f };
+		this->spaceCraftModel.pos = { 0.0f, 0.0f };
+		this->spaceCraftModel.rotation = 0.0f;
+		this->sound.playSpaceCraftDestructionSound();
+	}
+	
+	void destroySaucer() {
+		this->saucer.first->isActive = false;
+		this->sound.playSaucerDestructionSound();
 	}
 };

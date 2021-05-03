@@ -9,6 +9,7 @@ BulletModel::BulletModel(asteroids::Coords pos, asteroids::Coords forward)
 	this->pos = pos;
 	this->rotation = 0.0f;
 	this->size = 1.0f;
+	this->collisionFactor = 0.01f;
 	this->forward = forward;
 }
 BulletModel::~BulletModel()

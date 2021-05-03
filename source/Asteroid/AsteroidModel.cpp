@@ -39,6 +39,7 @@ AsteroidModel::AsteroidModel(asteroids::Coords pos, float size, unsigned int kil
 	this->pos = pos;
 	this->rotation = 0.0f;
 	this->size = size;
+	this->collisionFactor = 3.0f;
 	this->forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) };
 }
 

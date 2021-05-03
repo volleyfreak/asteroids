@@ -10,10 +10,16 @@ AsteroidsController::AsteroidsController(GLFWwindow* w)
 {
 	srand(time(NULL));
 	for (auto i = 0; i < 4; i++) {
+		auto life = new SpaceCraftModel();
+		life->rotation = M_PI / 2;
+		lifes.insert(std::make_pair(life, new AsteroidsView(life, shader)));
+	}
+
+	for (auto i = 0; i < 3; i++) {
 		CreateAsteroid();
 	}
-	auto saucer = new BigSaucerModel();
-	this->saucer = std::make_pair(saucer, new AsteroidsView(saucer, shader));
+	this->CreateBigSaucer();
+	this->saucer.first->isActive = false;
 }
 
 AsteroidsController::~AsteroidsController()
@@ -22,60 +28,121 @@ AsteroidsController::~AsteroidsController()
 
 bool AsteroidsController::GameTick()
 {
+	this->sound.playBackgroundSound();
+	//draw lifes
+	if (this->lifes.size() == 0) {
+		return false;
+	}
+	float xPos = 0;
+	for (auto lifeIt = lifes.begin(); lifeIt != lifes.end(); )
+	{
+		auto life = *lifeIt++;
+		life.second->GameTick(*life.first, { -0.95f + xPos, 0.95f }, life.first->bufferSize / 2);		
+		xPos += 0.07f;
+	}
+
 	UpdateInput(window, spaceCraftModel.forward, spaceCraftModel.rotation);
 	UpdatePosition(&spaceCraftModel.forward, &spaceCraftModel.pos);
 	this->spaceCraftView.GameTick(spaceCraftModel, spaceCraftModel.pos, 10);
 
-	if (this->saucer.first->isActive) {
+	if (this->gameTick++ % 3000 == 0) {
+		this->CreateSmallSaucer();
+		this->sound.switchToSaucerSound();
+	}
+	else if (this->gameTick % 1000 == 0) {
+		this->CreateBigSaucer();
+		this->sound.switchToSaucerSound();
+	}
+	if (this->saucer.first->isActive) { // check if saucer exists
 		UpdatePosition(&this->saucer.first->forward, &this->saucer.first->pos);
 		this->saucer.second->GameTick(*this->saucer.first, this->saucer.first->pos, 20);
 		if (this->saucer.first->ticks++ % 100 == 0) {
-			CreateBullet(this->saucer.first->pos, this->saucer.first->rotation);
+			CreateSaucerBullet(this->saucer.first->pos);
 		}
+		if (this->saucer.first->ticks++ % 133 == 0) {
+			this->saucer.first->forward.y = asteroids::randomF(-0.005f);
+		}
+		if (abs(this->saucer.first->pos.x) == 1.0f) {
+			this->saucer.first->isActive = false;
+			this->sound.switchToGameSound();
+		}
+		if (IsCollision(this->saucer.first->pos, this->saucer.first->GetCollisionRadius(), spaceCraftModel.pos, spaceCraftModel.GetCollisionRadius())) {
+			this->destroySaucer();
+			this->destroySpaceCraft();
+		  }
 	}
-	
 
 	for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
 	{		
 		auto bullet = *bulletIt++;
 		auto pos = UpdatePosition(&bullet.first->forward, &bullet.first->pos);
 		bullet.second->BulletTick(bullet.first, pos, 1);
-		if (bullet.first->tickCount++ > 180) {
+		if (bullet.first->tickCount++ > 100) {
 			bullets.erase(bullet);
 		}		
 	}
+
+	for (auto bulletIt = saucerBullets.begin(); bulletIt != saucerBullets.end(); )
+	{		
+		auto bullet = *bulletIt++;
+		auto pos = UpdatePosition(&bullet.first->forward, &bullet.first->pos);
+		bullet.second->BulletTick(bullet.first, pos, 1);
+		if (bullet.first->tickCount++ > 100) {
+			saucerBullets.erase(bullet);
+		}		
+	}
+
 	for (auto it = asteroids.begin(); it != asteroids.end();)
 	{		
 		auto asteroid = *it++;
 		auto pos = UpdatePosition(&asteroid.first->forward, &asteroid.first->pos);
-		asteroid.second->GameTick(*asteroid.first, *pos, 20);		
+		asteroid.second->GameTick(*asteroid.first, *pos, asteroid.first->bufferSize / 2);		
 		
-		if (IsCollision(spaceCraftModel.pos, 0.03f, asteroid.first->pos, asteroid.first->size * 3)) {
+		if (IsCollision(spaceCraftModel.pos, spaceCraftModel.GetCollisionRadius(), asteroid.first->pos, asteroid.first->GetCollisionRadius())) {
 			SplitAsteroid(asteroid.first);
 			asteroids.erase(asteroid);
-			//gameIsRunning = false;
+			this->destroySpaceCraft();
 		}
-		if (IsCollision(saucer.first->pos, 0.03f, asteroid.first->pos, asteroid.first->size * 3)) {
+		if (this->saucer.first->isActive && IsCollision(saucer.first->pos, this->saucer.first->GetCollisionRadius(), asteroid.first->pos, asteroid.first->GetCollisionRadius())) {
 			SplitAsteroid(asteroid.first);
 			asteroids.erase(asteroid);
-			//gameIsRunning = false;
+			this->destroySaucer();
 		}
 	}
+
 	for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
 	{
 		auto bullet = *bulletIt++;
 		for (auto it = asteroids.begin(); it != asteroids.end();)
 		{
 			auto asteroid = *it++;
-			if (IsCollision(bullet.first->pos, 0.01f, asteroid.first->pos, asteroid.first->size * 3)) {
+			if (IsCollision(bullet.first->pos, bullet.first->GetCollisionRadius(), asteroid.first->pos, asteroid.first->GetCollisionRadius())) {
 				bullets.erase(bullet);
 				SplitAsteroid(asteroid.first);
 				asteroids.erase(asteroid);
 			}
 		}
-		if (IsCollision(saucer.first->pos, saucer.first->size * 2, bullet.first->pos, bullet.first->size * 3)) {
-			//todo: destroy saucer
-			//gameIsRunning = false;
+		if (this->saucer.first->isActive && IsCollision(saucer.first->pos, saucer.first->GetCollisionRadius(), bullet.first->pos, bullet.first->GetCollisionRadius())) {
+			bullets.erase(bullet);
+			this->destroySaucer();
+		}
+	}
+	
+	for (auto bulletIt = saucerBullets.begin(); bulletIt != saucerBullets.end(); )
+	{
+		auto bullet = *bulletIt++;
+		for (auto it = asteroids.begin(); it != asteroids.end();)
+		{
+			auto asteroid = *it++;
+			if (IsCollision(bullet.first->pos, bullet.first->GetCollisionRadius(), asteroid.first->pos, asteroid.first->GetCollisionRadius())) {
+				saucerBullets.erase(bullet);
+				SplitAsteroid(asteroid.first);
+				asteroids.erase(asteroid);
+			}
+		}
+		if (IsCollision(spaceCraftModel.pos, spaceCraftModel.GetCollisionRadius(), bullet.first->pos, bullet.first->GetCollisionRadius())) {
+			saucerBullets.erase(bullet);
+			this->destroySpaceCraft();
 		}
 	}
 	return true;
@@ -92,5 +159,3 @@ void AsteroidsController::TransferCoordinates(float& x, float& y)
 	if (y < -1)
 		y = 1;
 }
-
-

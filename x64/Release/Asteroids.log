@@ -1,0 +1,24 @@
+﻿  BulletModel.cpp
+C:\source\uni\openGl\Asteroids\source\VertexBufferLayout.h(4,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  AsteroidsController.cpp
+C:\source\uni\openGl\Asteroids\source\AsteroidsController.h(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  AsteroidModel.cpp
+C:\source\uni\openGl\Asteroids\source\Asteroid\AsteroidModel.h(4,10): fatal error C1083: Cannot open include file: 'VertexBuffer.h': No such file or directory
+  SaucerModel.cpp
+C:\source\uni\openGl\Asteroids\source\Saucer\SaucerModel.h(4,10): fatal error C1083: Cannot open include file: 'VertexBuffer.h': No such file or directory
+  Shader.cpp
+C:\source\uni\openGl\Asteroids\source\Renderer.h(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  IndexBuffer.cpp
+C:\source\uni\openGl\Asteroids\source\Renderer.h(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  SpaceCraftModel.cpp
+C:\source\uni\openGl\Asteroids\source\SpaceCraft\SpaceCraftModel.h(3,10): fatal error C1083: Cannot open include file: 'VertexBuffer.h': No such file or directory
+  Renderer.cpp
+C:\source\uni\openGl\Asteroids\source\Renderer.cpp(1,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  main.cpp
+C:\source\uni\openGl\Asteroids\source\main.cpp(1,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  AsteroidsView.cpp
+C:\source\uni\openGl\Asteroids\source\VertexBufferLayout.h(4,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  VertexBuffer.cpp
+C:\source\uni\openGl\Asteroids\source\Renderer.h(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  VertexArray.cpp
+C:\source\uni\openGl\Asteroids\source\VertexBufferLayout.h(4,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
