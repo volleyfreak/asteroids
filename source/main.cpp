@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "windows.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,15 +9,15 @@
 #include <math.h>
 
 #include "VertexArray.h"
-#include "constants/constants.h"
+#include "constants.h"
 #include "Renderer.h"
-#include "AsteroidsController.h"
+#include "Controller/AsteroidsController.h"
 
 
-
-int main(void)
+int main(int argc, char* argv[])
 {
-	PlaySoundW(L"./source/sound/SaucerBackground.wav", NULL, SND_ASYNC);
+	/*testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();*/
 
 	GLFWwindow* window;
 

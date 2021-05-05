@@ -16,7 +16,9 @@ private:
 	int noBackgroundSound = -1;
 public:
 	//todo: play sound parallel (https://stackoverflow.com/questions/7676083/multi-channel-sound-with-winmm-many-waveoutopen)
+	//todo: useDirectSound API
 	//todo: shoot sound
+	//todo: accelerate sound
 
 	void playBackgroundSound() {
 		if (!backGroundPlaying) {

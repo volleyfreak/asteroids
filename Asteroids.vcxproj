@@ -95,7 +95,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\source\GameModels;C:\source\uni\openGl\Asteroids\source\Abstracts;C:\source\uni\openGl\Asteroids\source\Renderer;C:\source\uni\openGl\Asteroids\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,45 +136,42 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Sound\SoundController.cpp" />
-    <ClCompile Include="source\Bullet\BulletModel.cpp" />
-    <ClCompile Include="source\AsteroidsController.cpp" />
-    <ClCompile Include="source\Asteroid\AsteroidModel.cpp" />
-    <ClCompile Include="source\Saucer\SaucerModel.cpp" />
-    <ClCompile Include="source\Shader.cpp">
+    <ClCompile Include="source\GameModels\Bullet\BulletModel.cpp" />
+    <ClCompile Include="source\Controller\AsteroidsController.cpp" />
+    <ClCompile Include="source\GameModels\Asteroid\AsteroidModel.cpp" />
+    <ClCompile Include="source\GameModels\Saucer\SaucerModel.cpp" />
+    <ClCompile Include="source\Renderer\Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="source\IndexBuffer.cpp" />
-    <ClCompile Include="source\SpaceCraft\SpaceCraftModel.cpp" />
-    <ClCompile Include="source\Renderer.cpp" />
+    <ClCompile Include="source\Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="source\GameModels\SpaceCraft\SpaceCraftModel.cpp" />
+    <ClCompile Include="source\Renderer\Renderer.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\AsteroidsView.cpp" />
-    <ClCompile Include="source\VertexBuffer.cpp" />
-    <ClCompile Include="source\VertexArray.cpp" />
+    <ClCompile Include="source\View\AsteroidsView.cpp" />
+    <ClCompile Include="source\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="source\Renderer\VertexArray.cpp" />
+    <ClCompile Include="tests\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Sound\SoundController.h" />
-    <ClInclude Include="source\Bullet\BulletModel.h" />
-    <ClInclude Include="source\AsteroidsController.h" />
-    <ClInclude Include="source\Asteroid\AsteroidModel.h" />
-    <ClInclude Include="source\constants\constants.h" />
-    <ClInclude Include="source\GameModel.h" />
-    <ClInclude Include="source\IndexBuffer.h" />
-    <ClInclude Include="source\Saucer\SaucerModel.h" />
-    <ClInclude Include="source\Structs.h" />
-    <ClInclude Include="source\AsteroidsView.h" />
-    <ClInclude Include="source\Renderer.h" />
-    <ClInclude Include="source\SpaceCraft\SpaceCraftModel.h" />
-    <ClInclude Include="source\Shader.h">
+    <ClInclude Include="source\GameModels\Bullet\BulletModel.h" />
+    <ClInclude Include="source\Controller\AsteroidsController.h" />
+    <ClInclude Include="source\GameModels\Asteroid\AsteroidModel.h" />
+    <ClInclude Include="source\Abstracts\constants.h" />
+    <ClInclude Include="source\GameModels\GameModel.h" />
+    <ClInclude Include="source\Renderer\IndexBuffer.h" />
+    <ClInclude Include="source\GameModels\Saucer\SaucerModel.h" />
+    <ClInclude Include="source\Abstracts\Structs.h" />
+    <ClInclude Include="source\View\AsteroidsView.h" />
+    <ClInclude Include="source\Renderer\Renderer.h" />
+    <ClInclude Include="source\GameModels\SpaceCraft\SpaceCraftModel.h" />
+    <ClInclude Include="source\Renderer\Shader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="source\VertexBuffer.h" />
-    <ClInclude Include="source\VertexArray.h" />
-    <ClInclude Include="source\VertexBufferLayout.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="..\..\..\..\Users\volle\Downloads\test.wav" />
+    <ClInclude Include="source\Renderer\VertexBuffer.h" />
+    <ClInclude Include="source\Renderer\VertexArray.h" />
+    <ClInclude Include="source\Renderer\VertexBufferLayout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
