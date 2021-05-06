@@ -35,19 +35,19 @@ SaucerModel::SaucerModel(int score, float size)
 		 1.0f,  3.0f,
 		 2.0f,  1.5f
 	};
-	auto forward = asteroids::randomF(-0.005f);
+	auto forward = asteroids::randomF(-0.003f);
 	if (asteroids::randomF(0.005f) > 0.0f) {
 		this->pos = { 1.0f, asteroids::randomF() };
 		if (forward > 0.0f) {
 			forward *= -1;
-			forward += -0.002f;
+			forward += -0.003f;
 		}
 	}
 	else {
 		this->pos = { -1.0f, asteroids::randomF() };
 		if (forward < 0.0f) {
 			forward *= -1;
-			forward += 0.002f;
+			forward += 0.003f;
 		}
 	}
 	this->score = score;

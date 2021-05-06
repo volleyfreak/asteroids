@@ -172,6 +172,9 @@
     <ClInclude Include="source\Renderer\VertexArray.h" />
     <ClInclude Include="source\Renderer\VertexBufferLayout.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="source\AsteroidConfigs.h.in" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

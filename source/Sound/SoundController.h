@@ -8,11 +8,11 @@ private:
 	boolean playSpaceCraftSound = true;
 	boolean playSaucerSound = false;
 	boolean backGroundPlaying = false;
-	LPCWSTR gameSoundFile = L"./source/sound/Background.wav";
-	LPCWSTR spaceCraftDestructionFile = L"./source/sound/SpacecraftDestruction.wav";
-	LPCWSTR asteroidDestructionFile = L"./source/sound/AsteroidDestruction.wav";
-	LPCWSTR saucerDestructionFile = L"./source/sound/SaucerDestruction.wav";
-	LPCWSTR saucerFile = L"./source/sound/SaucerBackground.wav";
+	LPCWSTR gameSoundFile = L"./res/sounds/Background.wav";
+	LPCWSTR spaceCraftDestructionFile = L"./res/sounds/SpacecraftDestruction.wav";
+	LPCWSTR asteroidDestructionFile = L"./res/sounds/AsteroidDestruction.wav";
+	LPCWSTR saucerDestructionFile = L"./res/sounds/SaucerDestruction.wav";
+	LPCWSTR saucerFile = L"./res/sounds/SaucerBackground.wav";
 	int noBackgroundSound = -1;
 public:
 	//todo: play sound parallel (https://stackoverflow.com/questions/7676083/multi-channel-sound-with-winmm-many-waveoutopen)

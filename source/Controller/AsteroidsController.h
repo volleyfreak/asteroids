@@ -174,8 +174,8 @@ public:
 			if (asteroid->killCount == 2) {
 				score = SCORE_SMALL_ASTEROID;
 			}
-			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
-			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.5f, asteroid->killCount);
+			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.4f, asteroid->killCount);
+			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.4f, asteroid->killCount);
 		}
 		std::cout << "current Score = " << this->highscore << std::endl;
 	}

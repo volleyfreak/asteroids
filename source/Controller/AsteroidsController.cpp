@@ -54,18 +54,10 @@ bool AsteroidsController::GameTick()
 	}
 	else {
 		this->waitForSpaceCraft++;
-	}	
+	}		
 
-	if (this->gameTick % 3000 == 0) {
-		this->CreateSmallSaucer();
-		this->sound.switchToSaucerSound();
-	}
-	else if (this->gameTick % 1000 == 0) {
-		this->CreateBigSaucer();
-		this->sound.switchToSaucerSound();
-	}
-
-	if (this->saucer.first->isActive) { // check if saucer exists
+	// check if saucer exists
+	if (this->saucer.first->isActive) { 
 		UpdatePosition(&this->saucer.first->forward, &this->saucer.first->pos);
 		this->saucer.second->GameTick(*this->saucer.first, this->saucer.first->pos, 20);
 		if (this->saucer.first->ticks++ % 100 == 0) {
@@ -83,10 +75,19 @@ bool AsteroidsController::GameTick()
 			this->destroySpaceCraft();
 		  }
 	}
+	//create saucer
 	else {
 		this->gameTick++;
+		if (this->gameTick % 3000 == 0) {
+			this->CreateSmallSaucer();
+			this->sound.switchToSaucerSound();
+		}
+		else if (this->gameTick % 1000 == 0) {
+			this->CreateBigSaucer();
+			this->sound.switchToSaucerSound();
+		}
 	}
-
+	//draw bullets
 	for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
 	{		
 		auto bullet = *bulletIt++;

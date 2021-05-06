@@ -15,7 +15,7 @@
 
 
 int main(int argc, char* argv[])
-{
+{	
 	/*testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();*/
 
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 		return -1;
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
@@ -69,5 +69,6 @@ int main(int argc, char* argv[])
 	}	
 
 	glfwTerminate();
+	std::cin.get();
 	return 0;
 }

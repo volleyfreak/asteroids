@@ -13,7 +13,7 @@ private:
 	
 public:
 	bool isBoosted = false;
-	float colisionFactor = 0.03f;
+	float colisionFactor = 0.02f;
 	SpaceCraftModel();
 	~SpaceCraftModel();
 };
