@@ -16,9 +16,9 @@ AsteroidsController::AsteroidsController(GLFWwindow* w)
 	}
 
 	for (auto i = 0; i < 3; i++) {
-		CreateAsteroid(SCORE_LARGE_ASTEROID);
+		this->asteroids.insert(CreateAsteroid(SCORE_LARGE_ASTEROID));
 	}
-	this->CreateBigSaucer();
+	this->saucer = this->CreateBigSaucer();
 	this->saucer.first->isActive = false;
 }
 
@@ -26,19 +26,26 @@ AsteroidsController::~AsteroidsController()
 {
 }
 
-bool AsteroidsController::GameTick()
-{
-	this->sound.playBackgroundSound();
-	//draw lifes
-	if (this->lifes.size() == 0) {
-		return false;
+bool CheckLifes(std::set<std::pair<SpaceCraftModel*, AsteroidsView*>> lifes) {
+	if (lifes.size() == 0) {
+		return true;
 	}
 	float xPos = 0;
 	for (auto lifeIt = lifes.begin(); lifeIt != lifes.end(); )
 	{
 		auto life = *lifeIt++;
-		life.second->GameTick(*life.first, { -0.95f + xPos, 0.95f }, life.first->bufferSize / 2 - 4);		
+		life.second->GameTick(*life.first, { -0.95f + xPos, 0.95f }, life.first->bufferSize / 2 - 4);
 		xPos += 0.07f;
+	}
+	return false;
+}
+
+bool AsteroidsController::GameTick()
+{
+	this->sound.playBackgroundSound();
+	//draw lifes
+	if (CheckLifes(this->lifes)) {
+		return true;
 	}
 
 	if (this->waitForSpaceCraft > 0) {
@@ -54,7 +61,7 @@ bool AsteroidsController::GameTick()
 	}
 	else {
 		this->waitForSpaceCraft++;
-	}		
+	}
 
 	// check if saucer exists
 	if (this->saucer.first->isActive) { 
@@ -79,11 +86,11 @@ bool AsteroidsController::GameTick()
 	else {
 		this->gameTick++;
 		if (this->gameTick % 3000 == 0) {
-			this->CreateSmallSaucer();
+			this->saucer = this->CreateSmallSaucer();
 			this->sound.switchToSaucerSound();
 		}
 		else if (this->gameTick % 1000 == 0) {
-			this->CreateBigSaucer();
+			this->saucer = this->CreateBigSaucer();
 			this->sound.switchToSaucerSound();
 		}
 	}
@@ -119,7 +126,7 @@ bool AsteroidsController::GameTick()
 	}
 	if (asteroids.size() == 0) {
 		for (auto i = 0; i < 3; i++) {
-			CreateAsteroid(SCORE_LARGE_ASTEROID);
+			this->asteroids.insert(CreateAsteroid(SCORE_LARGE_ASTEROID));
 		}
 	}
 	else {
@@ -176,20 +183,48 @@ bool AsteroidsController::GameTick()
 			saucerBullets.erase(bullet);
 			this->destroySpaceCraft();
 		}
-	}
-
-	
+	}	
 	return true;
 }
 
-void AsteroidsController::TransferCoordinates(float& x, float& y)
+void AsteroidsController::UpdateInput(GLFWwindow* window, SpaceCraftModel& spaceCraft)
 {
-	if (x > 1)
-		x = -1;
-	if (x < -1)
-		x = 1;
-	if (y > 1)
-		y = -1;
-	if (y < -1)
-		y = 1;
+	spaceCraft.forward.x *= 0.997f;
+	spaceCraft.forward.y *= 0.997f;
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		float x = 0.0001f * cos(spaceCraft.rotation);
+		float y = 0.0001f * sin(spaceCraft.rotation);
+		spaceCraft.forward.x += x;
+		spaceCraft.forward.y += y;
+		spaceCraft.isBoosted = true;
+	}
+	else {
+		spaceCraft.isBoosted = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		spaceCraft.rotation -= 0.05f;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		spaceCraft.rotation += 0.05f;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+	{
+		this->shooted = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		if (!this->shooted && this->bullets.size() < 4) {
+			this->bullets.insert(CreateBullet(spaceCraftModel.pos, spaceCraft.rotation));
+			this->shooted = true;
+		}
+
+	}
 }

@@ -1,8 +1,9 @@
 #pragma once
-#include "GameModels/SpaceCraft/SpaceCraftModel.h"
 #include "GameModels/GameModel.h"
 #include "Shader.h"
 #include "Structs.h"
+#include "VertexArray.h"
+#include "Shader.h"
 
 class AsteroidsView
 {
