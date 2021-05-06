@@ -53,9 +53,12 @@ public:
 	bool GameTick();
 	
 	void UpdateInput(GLFWwindow* window, SpaceCraftModel& spaceCraft);
-	
-	
-	
+	void CreateExplosion(asteroids::Coords pos);
+	int DestroySpaceCraft(SpaceCraftModel* spaceCraft);
+	unsigned int DestroySaucer(SaucerModel* saucer);
+	unsigned int SplitAsteroid(std::pair<AsteroidModel*, AsteroidsView*> asteroidPair);
+	bool CheckLifes(std::set<std::pair<SpaceCraftModel*, AsteroidsView*>> lifes);
+
 
 	std::pair<AsteroidModel*, AsteroidsView*> CreateAsteroid(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.025f, unsigned int killCount = 0) {
 		auto asteroid = new AsteroidModel(pos, size, killCount, score);
@@ -82,51 +85,5 @@ public:
 		float y = 0.02f * sin(asteroids::randomF(M_PI));
 		auto bullet = new BulletModel(pos, { x, y });
 		return std::make_pair(bullet, new AsteroidsView(bullet, shader));
-	}
-
-	void destroySpaceCraft() {
-		this->CreateExplosion(this->spaceCraftModel.pos);
-		this->lifes.erase(std::prev(this->lifes.end()));
-		this->spaceCraftModel.forward = { 0.0f, 0.0f };
-		this->spaceCraftModel.pos = { 0.0f, 0.0f };
-		this->spaceCraftModel.rotation = 0.0f;		
-		this->sound.playSpaceCraftDestructionSound();
-		this->waitForSpaceCraft = -100;
-	}
-	
-	void destroySaucer(SaucerModel* saucer) {
-		this->highscore += saucer->score;
-		saucer->isActive = false;
-		this->CreateExplosion(saucer->pos);
-		this->sound.playSaucerDestructionSound();
-		std::cout << "current Score = " << this->highscore << std::endl;
-	}
-
-	void CreateExplosion(asteroids::Coords pos) {
-		for (unsigned int i = 0; i < 20; i++) {
-			float x = 0.002f * cos(asteroids::randomF(M_PI));
-			float y = 0.002f * sin(asteroids::randomF(M_PI));
-			auto bullet = new BulletModel(pos, { x, y });
-			explosionBullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, shader)));
-		}
-	}
-
-	void SplitAsteroid(AsteroidModel* asteroid) {
-		this->highscore += asteroid->score;
-		this->sound.playAsteroidDestructionSound();
-		this->CreateExplosion(asteroid->pos);
-		if (asteroid->killCount < 2) {
-			asteroid->killCount++;
-			int score = SCORE_LARGE_ASTEROID;
-			if (asteroid->killCount == 1) {
-				score = SCORE_MEDIUM_ASTEROID;
-			}
-			if (asteroid->killCount == 2) {
-				score = SCORE_SMALL_ASTEROID;
-			}
-			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.4f, asteroid->killCount);
-			CreateAsteroid(score, asteroid->pos, asteroid->size * 0.4f, asteroid->killCount);
-		}
-		std::cout << "current Score = " << this->highscore << std::endl;
-	}
+	}	
 };

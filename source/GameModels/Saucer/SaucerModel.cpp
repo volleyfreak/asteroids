@@ -53,7 +53,7 @@ SaucerModel::SaucerModel(int score, float size)
 	this->score = score;
 	this->rotation = 0.0f;
 	this->size = size;
-	this->collisionFactor = 5.0f;
+	this->collisionFactor = 4.5f;
 	this->forward = { forward, asteroids::randomF(0.005f) };
 }
 

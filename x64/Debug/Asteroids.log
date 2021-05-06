@@ -1,10 +1,10 @@
 ﻿  AsteroidsController.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\source\uni\openGl\Asteroids\libraries\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
-C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(81,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(82,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(107,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(108,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(84,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.h(85,1): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(11,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(14,28): warning C4305: '=': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(233,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(234,49): warning C4305: 'argument': truncation from 'double' to 'float'
   Asteroids.vcxproj -> C:\source\uni\openGl\Asteroids\x64\Debug\Asteroids.exe

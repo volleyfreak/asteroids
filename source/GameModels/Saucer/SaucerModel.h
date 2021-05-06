@@ -1,12 +1,7 @@
 #pragma once
 
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-
 #include "../GameModel.h"
-#include "Shader.h"
 #include "Structs.h"
 
 class SaucerModel : public GameModel

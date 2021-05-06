@@ -23,7 +23,7 @@ AsteroidsView::~AsteroidsView()
 	shader.Unbind();
 }
 
-void AsteroidsView::GameTick(GameModel spaceCraftModel,asteroids::Coords pos, int lines)
+void AsteroidsView::GameTick(GameModel spaceCraftModel, asteroids::Coords pos, int lines)
 {
 	shader.Bind();
 	shader.SetUniform2f("uSize", spaceCraftModel.size, spaceCraftModel.size);
@@ -34,12 +34,12 @@ void AsteroidsView::GameTick(GameModel spaceCraftModel,asteroids::Coords pos, in
 	va.Bind();
 	GLCall(glDrawArrays(GL_LINES, 0, lines));
 }
-void AsteroidsView::BulletTick(GameModel* spaceCraftModel,asteroids::Coords* pos, int lines)
+void AsteroidsView::BulletTick(GameModel spaceCraftModel, asteroids::Coords pos, int lines)
 {
 	shader.Bind();
-	shader.SetUniform2f("uSize", spaceCraftModel->size, spaceCraftModel->size);
-	shader.SetUniform2f("uPosition", pos->x, pos->y);
-	shader.SetUniform1f("uRotate", spaceCraftModel->rotation);
+	shader.SetUniform2f("uSize", spaceCraftModel.size, spaceCraftModel.size);
+	shader.SetUniform2f("uPosition", pos.x, pos.y);
+	shader.SetUniform1f("uRotate", spaceCraftModel.rotation);
 	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	va.Bind();
