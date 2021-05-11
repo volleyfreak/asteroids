@@ -5,8 +5,15 @@
 class GameModel
 {
 private:
-
+	/*class Foo
+	{
+		X x_;
+	public:
+		X x() const { return x_; }
+		void x(X x) { x_ = std::move(x); }
+	}*/
 public:
+	//todo: getter and setter
 	std::vector<float> positions;
 	int bufferSize = 20;
 	asteroids::Coords forward = { 0.0f, 0.0f };

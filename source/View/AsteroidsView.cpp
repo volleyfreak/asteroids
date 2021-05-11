@@ -23,7 +23,7 @@ AsteroidsView::~AsteroidsView()
 	shader.Unbind();
 }
 
-void AsteroidsView::GameTick(GameModel spaceCraftModel, asteroids::Coords pos, int lines)
+void AsteroidsView::GameTick(const GameModel& spaceCraftModel, asteroids::Coords pos, int lines)
 {
 	shader.Bind();
 	shader.SetUniform2f("uSize", spaceCraftModel.size, spaceCraftModel.size);

@@ -16,11 +16,9 @@
 #include <gtest/gtest.h>
 
 
-int main(int argc, char* argv[])
-{	
-	/*testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();*/
 
+int main(int argc, char* argv[])
+{
 	GLFWwindow* window;
 
 	/* Initialize the library */
@@ -48,7 +46,7 @@ int main(int argc, char* argv[])
 		std::cout << "Error!" << std::endl;
 	}
 	
-	AsteroidsController controller = AsteroidsController(window);
+	asteroids::AsteroidsController controller = asteroids::AsteroidsController(window);
 		
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
@@ -61,7 +59,7 @@ int main(int argc, char* argv[])
 
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
-		 gameIsRunning = controller.GameTick();
+		gameIsRunning = controller.GameTick();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

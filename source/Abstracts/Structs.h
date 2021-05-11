@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <string>
 #include <sstream>
 
@@ -20,27 +21,27 @@ namespace asteroids {
 		else {
 			flip++;
 			return randomValue;
-		}
-		
+		}		
 	}	
 
-	static void TransferCoordinates(float& x, float& y)
+	static asteroids::Coords TransferCoordinates(asteroids::Coords pos)
 	{
-		if (x > 1)
-			x = -1;
-		if (x < -1)
-			x = 1;
-		if (y > 1)
-			y = -1;
-		if (y < -1)
-			y = 1;
+		if (pos.x > 1)
+			pos.x = -1;
+		if (pos.x < -1)
+			pos.x = 1;
+		if (pos.y > 1)
+			pos.y = -1;
+		if (pos.y < -1)
+			pos.y = 1;
+		return pos;
 	}
 
-	static asteroids::Coords UpdatePosition(asteroids::Coords forward, asteroids::Coords pos)
+	static asteroids::Coords UpdatePosition(const asteroids::Coords& forward, asteroids::Coords pos)
 	{
 		pos.x += forward.x;
 		pos.y += forward.y;
-		TransferCoordinates(pos.x, pos.y);
+		pos = TransferCoordinates(pos);
 		return pos;
 	}
 
@@ -51,4 +52,10 @@ namespace asteroids {
 		float distance = sqrt((x * x) + (y * y));
 		return distance <= scale1 + scale2;
 	}
+	
+	static asteroids::Coords normalize(float x, float y)
+	{
+		float factor = 1 / sqrt((x * x) + (y * y));
+		return { x * factor * 0.015f, y * factor * 0.015f };
+	}	
 }
