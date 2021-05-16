@@ -1,8 +1,9 @@
 #include "NumberModels.h"
 
 NumberModels::NumberModels(int number, asteroids::Coords pos)
-	: GameModel(18)
+	: GameModel()
 {
+	bufferSize = 28;
 	switch (number) {
 	case 0:
 		this->positions = Get0();

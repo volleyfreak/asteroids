@@ -10,11 +10,13 @@ class AsteroidsView
 private:
 	VertexArray va;
 	Shader& shader;
+	GameModel* gameModel;
 public:
 	AsteroidsView(GameModel* gameModel, Shader& s);
 	~AsteroidsView();
 
-	void GameTick(const GameModel& spaceCraftModel, asteroids::Coords pos, int lines);
-	void BulletTick(GameModel spaceCraftModel, asteroids::Coords pos, int lines);
+	void GameTick();
+	void GameTick(int lines);
+	void BulletTick();
 
 };

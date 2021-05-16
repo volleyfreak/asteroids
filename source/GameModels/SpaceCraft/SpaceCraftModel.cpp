@@ -3,8 +3,9 @@
 
 
 SpaceCraftModel::SpaceCraftModel()
-	: GameModel(28)
+	: GameModel()
 {
+	bufferSize = 28;
 	positions = {
 		-0.25f,  0.2f,
 		 0.25f,  0.0f,

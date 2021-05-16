@@ -1,10 +1,12 @@
 #include "BulletModel.h"
 
 BulletModel::BulletModel(asteroids::Coords pos, asteroids::Coords forward)
-	: GameModel(2)
+	: GameModel()
 {
+	bufferSize = 2;
 	positions = {
 		0.0f, 0.0f,
+		0.0f, 0.05f,
 	};
 	this->pos = pos;
 	this->rotation = 0.0f;

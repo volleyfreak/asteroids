@@ -2,8 +2,9 @@
 #pragma once
 
 SaucerModel::SaucerModel(int score, float size, float speed)
-	: GameModel(40)
+	: GameModel()
 {
+	bufferSize = 40;
 	positions = {
 		-5.0f,  0.0f,
 		 5.0f,  0.0f,
