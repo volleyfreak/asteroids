@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 		return -1;
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
@@ -46,15 +46,14 @@ int main(int argc, char* argv[])
 		std::cout << "Error!" << std::endl;
 	}
 	
-	asteroids::AsteroidsController controller = asteroids::AsteroidsController(window);
+	AsteroidsController controller = AsteroidsController(window);
 		
-
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	bool gameIsRunning = true;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window) && gameIsRunning)
-	{	
+	{
 		/* Render here */
 
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
@@ -66,9 +65,8 @@ int main(int argc, char* argv[])
 
 		/* Poll for and process events */
 		glfwPollEvents();
-	}	
-
+	}
 	glfwTerminate();
-	std::cin.get();
+	exit(0);
 	return 0;
 }

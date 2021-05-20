@@ -6,26 +6,26 @@ SaucerModel::SaucerModel(int score, float size, float speed)
 {
 	bufferSize = 40;
 	positions = {
-		-5.0f,  0.0f,
-		 5.0f,  0.0f,
+		-6.0f,  0.0f,
+		 6.0f,  0.0f,
 
-		 5.0f,  0.0f,
+		 6.0f,  0.0f,
 		 3.0f, -1.5f,
 
 		 3.0f, -1.5f,
 		-3.0f, -1.5f,
 
 		-3.0f, -1.5f,
-		-5.0f,  0.0f,
+		-6.0f,  0.0f,
 
-		-5.0f,  0.0f,
+		-6.0f,  0.0f,
 		-3.0f,  1.5f,
 
 		-3.0f,  1.5f,
 		 3.0f,  1.5f,
 
 		 3.0f,  1.5f,		
-		 5.0f,  0.0f,
+		 6.0f,  0.0f,
 
 		-2.0f,  1.5f,
 		-1.0f,  3.0f,

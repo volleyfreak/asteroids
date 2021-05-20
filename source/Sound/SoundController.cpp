@@ -120,6 +120,15 @@ HRESULT SoundController::playAudio(IXAudio2SourceVoice*& pSourceVoice, XAUDIO2_B
 		return hr;
 }
 
+SoundController::SoundController()
+{
+}
+
+SoundController::~SoundController()
+{
+	this->stopAllSoundLoops();
+}
+
 HRESULT SoundController::Initialize()
 {
 	hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -134,7 +143,8 @@ HRESULT SoundController::Initialize()
 		return hr;
 
 	SetupSourceVoice(backgroundFile, pBackgroundVoice, backgroundBuffer);
-	SetupSourceVoice(spaceCraftDestructionFile, pSpaceCraftDestructionVoice, spaceCraftDestructionBuffer);
+	SetupSourceVoice(destructionFile, pSaucerDestructionVoice, saucerDestructionBuffer);
+	SetupSourceVoice(spaceShipDestructionFile, pSpaceShipDestructionVoice, spaceShipDestructionBuffer);
 	SetupSourceVoice(shootingFile, pShootingVoice, shootingBuffer);
 	SetupSourceVoice(saucerFile, pSaucerVoice, saucerBuffer);
 	SetupSourceVoice(smallSaucerFile, pSmallSaucerVoice, smallSaucerBuffer);
@@ -160,13 +170,13 @@ HRESULT SoundController::playAsteroidDestructionSound()
 
 HRESULT SoundController::playSaucerDestructionSound()
 {
-	SetupSourceVoice(destructionFile, pDestructionVoice, destructionBuffer);
-	return playAudio(pDestructionVoice, destructionBuffer, false, 0.8f);
+	
+	return playAudio(pSaucerDestructionVoice, destructionBuffer, false, 0.8f);
 }
 
-HRESULT SoundController::playSpaceCraftDestructionSound()
+HRESULT SoundController::playspaceShipDestructionSound()
 {
-	return playAudio(pSpaceCraftDestructionVoice, spaceCraftDestructionBuffer, false, 0.4f);
+	return playAudio(pSpaceShipDestructionVoice, spaceShipDestructionBuffer, false, 0.4f);
 }
 
 HRESULT SoundController::playSaucerSound()

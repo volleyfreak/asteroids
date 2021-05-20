@@ -1,0 +1,5 @@
+C:\source\uni\openGl\Asteroids\x64\Debug\Asteroids.vcxproj.CopyComplete
+C:\source\uni\openGl\Asteroids\x64\Debug\Asteroids.exe
+C:\source\uni\openGl\Asteroids\x64\Debug\xapobaseredist.pdb
+C:\source\uni\openGl\Asteroids\x64\Debug\xaudio2_9redist.pdb
+C:\source\uni\openGl\Asteroids\x64\Debug\xaudio2_9redist.dll

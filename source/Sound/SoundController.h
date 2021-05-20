@@ -22,13 +22,16 @@ private:
 	const char* backgroundFile = __TEXT("./res/sounds/Background.wav");
 	XAUDIO2_BUFFER backgroundBuffer = { 0 };
 
-	IXAudio2SourceVoice* pSpaceCraftDestructionVoice;
-	const char* spaceCraftDestructionFile = __TEXT("./res/sounds/SpacecraftDestruction.wav");
-	XAUDIO2_BUFFER spaceCraftDestructionBuffer = { 0 };
+	IXAudio2SourceVoice* pSpaceShipDestructionVoice;
+	const char* spaceShipDestructionFile = __TEXT("./res/sounds/spaceShipDestruction.wav");
+	XAUDIO2_BUFFER spaceShipDestructionBuffer = { 0 };
 
 	IXAudio2SourceVoice* pDestructionVoice;
 	const char* destructionFile = __TEXT("./res/sounds/Destruction.wav");
 	XAUDIO2_BUFFER destructionBuffer = { 0 };
+
+	IXAudio2SourceVoice* pSaucerDestructionVoice;
+	XAUDIO2_BUFFER saucerDestructionBuffer = { 0 };
 
 	IXAudio2SourceVoice* pShootingVoice;
 	const char* shootingFile = __TEXT("./res/sounds/Shooting.wav");
@@ -55,29 +58,46 @@ private:
 	HRESULT playAudio(IXAudio2SourceVoice*& pSourceVoice, XAUDIO2_BUFFER& buffer, bool loopAudio = false, float volume = 1.0f);
 
 public:
+	SoundController();
+	~SoundController();
+
+	//Initializes Source voices
 	HRESULT Initialize();
 
+	//Plays background sound loop
 	HRESULT playBackgroundSound();
+
+	//Changes speed of backgrouns sound loop
 	HRESULT pitchBackgroundSound(float pitch);
 
+	//Plays asteroid destruction sound
 	HRESULT playAsteroidDestructionSound();
 
+	//Plays saucer destruction sound
 	HRESULT playSaucerDestructionSound();
 
-	HRESULT playSpaceCraftDestructionSound();
+	//Plays space ship destruction sound
+	HRESULT playspaceShipDestructionSound();
 
+	//Plays saucer background sound loop
 	HRESULT playSaucerSound();
 
+	//Stops saucer background sound loop
 	HRESULT stopSaucerSound();
 	
+	//Plays small saucer background sound loop
 	HRESULT playSmallSaucerSound();
 
+	//Plays shooting sound
 	HRESULT playShootingSound();
 
+	//Plays thrusting sound loop
 	HRESULT playThrustSound();
 
+	//Stops thrusting sound loop
 	HRESULT stopThrustSound();
 
+	//Stops all running sound loops
 	HRESULT stopAllSoundLoops();
 };
 

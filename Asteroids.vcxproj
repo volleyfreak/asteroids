@@ -137,7 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\GameModels\Number\NumberModels.cpp" />
+    <ClCompile Include="source\GameModels\GameModel.cpp" />
+    <ClCompile Include="source\GameModels\Number\NumberModel.cpp" />
     <ClCompile Include="source\Sound\SoundController.cpp" />
     <ClCompile Include="source\GameModels\Bullet\BulletModel.cpp" />
     <ClCompile Include="source\Controller\AsteroidsController.cpp" />
@@ -147,7 +148,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="source\Renderer\IndexBuffer.cpp" />
-    <ClCompile Include="source\GameModels\SpaceCraft\SpaceCraftModel.cpp" />
+    <ClCompile Include="source\GameModels\SpaceShip\SpaceShipModel.cpp" />
     <ClCompile Include="source\Renderer\Renderer.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\View\AsteroidsView.cpp" />
@@ -155,7 +156,7 @@
     <ClCompile Include="source\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\GameModels\Number\NumberModels.h" />
+    <ClInclude Include="source\GameModels\Number\NumberModel.h" />
     <ClInclude Include="source\Sound\SoundController.h" />
     <ClInclude Include="source\GameModels\Bullet\BulletModel.h" />
     <ClInclude Include="source\Controller\AsteroidsController.h" />
@@ -164,10 +165,10 @@
     <ClInclude Include="source\GameModels\GameModel.h" />
     <ClInclude Include="source\Renderer\IndexBuffer.h" />
     <ClInclude Include="source\GameModels\Saucer\SaucerModel.h" />
-    <ClInclude Include="source\Abstracts\Structs.h" />
+    <ClInclude Include="source\Abstracts\Utils.h" />
     <ClInclude Include="source\View\AsteroidsView.h" />
     <ClInclude Include="source\Renderer\Renderer.h" />
-    <ClInclude Include="source\GameModels\SpaceCraft\SpaceCraftModel.h" />
+    <ClInclude Include="source\GameModels\SpaceShip\SpaceShipModel.h" />
     <ClInclude Include="source\Renderer\Shader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>

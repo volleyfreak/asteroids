@@ -1,0 +1,18 @@
+﻿  AsteroidsController.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\source\uni\openGl\Asteroids\libraries\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(9,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(13,28): warning C4305: '=': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(33,64): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(124,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(345,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(346,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(354,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(355,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(358,49): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(398,47): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(402,41): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\source\uni\openGl\Asteroids\source\Controller\AsteroidsController.cpp(438,42): warning C4305: 'argument': truncation from 'double' to 'float'
+  NumberModel.cpp
+  Generating Code...
+  Asteroids.vcxproj -> C:\source\uni\openGl\Asteroids\x64\Debug\Asteroids.exe

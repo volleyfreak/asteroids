@@ -9,8 +9,8 @@ AsteroidsView::AsteroidsView(GameModel* gameModel, Shader& s)
 	GLCall(glBindVertexArray(vao));
 
 	this->gameModel = gameModel;
-	const int size = static_cast<int>(gameModel->positions.size());
-	float arr[44];
+
+	float arr[44]; //max size of game object positions. There seems to be no way to determine it dynamically during runtime in C++;
 	std::copy(gameModel->positions.begin(), gameModel->positions.end(), arr);
 	VertexBuffer vb(arr, 44 * sizeof(float));
 	VertexBufferLayout layout;
@@ -27,7 +27,7 @@ AsteroidsView::~AsteroidsView()
 void AsteroidsView::GameTick()
 {
 	shader.Bind();
-	shader.SetUniform2f("uSize", gameModel->size, gameModel->size);
+	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
 	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -39,7 +39,7 @@ void AsteroidsView::GameTick()
 void AsteroidsView::GameTick(int lines)
 {
 	shader.Bind();
-	shader.SetUniform2f("uSize", gameModel->size, gameModel->size);
+	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
 	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -51,7 +51,7 @@ void AsteroidsView::GameTick(int lines)
 void AsteroidsView::BulletTick()
 {
 	shader.Bind();
-	shader.SetUniform2f("uSize", gameModel->size, gameModel->size);
+	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
 	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
