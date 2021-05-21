@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroids", "Asteroids.vcxproj", "{417124BB-3F05-4D3B-B02C-6741A521906D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroids", "AsteroidsGame\Asteroids.vcxproj", "{417124BB-3F05-4D3B-B02C-6741A521906D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsteroidsTest", "..\AsteroidsTest\AsteroidsTest.vcxproj", "{C8E0D835-ED97-49CA-BC4E-6DFF084F273F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsteroidsTest", "AsteroidsTest\AsteroidsTest.vcxproj", "{C8E0D835-ED97-49CA-BC4E-6DFF084F273F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
