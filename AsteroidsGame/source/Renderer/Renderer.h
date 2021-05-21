@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include <iostream>
 
 #define ASSERT(x) if (!(x)) __debugbreak();
 //Wrapper for OpenGL functions to break on error and provide error information

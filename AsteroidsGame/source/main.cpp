@@ -13,10 +13,6 @@
 #include "Renderer.h"
 #include "Controller/AsteroidsController.h"
 
-#include <gtest/gtest.h>
-
-
-
 int main(int argc, char* argv[])
 {
 	GLFWwindow* window;

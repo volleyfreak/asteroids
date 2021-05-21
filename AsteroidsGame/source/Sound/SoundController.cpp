@@ -104,6 +104,7 @@ HRESULT SoundController::SetupSourceVoice(const char* fileLocation, IXAudio2Sour
 	buffer.pAudioData = pDataBuffer;  //buffer containing audio data
 	buffer.Flags = XAUDIO2_END_OF_STREAM; // tell the source voice not to expect any data after this buffer				
 	if (FAILED(hr = pXAudio2->CreateSourceVoice(&pSourceVoice, (WAVEFORMATEX*)&wfx))) return hr;
+	return hr;
 }
 
 HRESULT SoundController::playAudio(IXAudio2SourceVoice*& pSourceVoice, XAUDIO2_BUFFER& buffer, bool loopAudio, float volume)
@@ -118,6 +119,7 @@ HRESULT SoundController::playAudio(IXAudio2SourceVoice*& pSourceVoice, XAUDIO2_B
 		return hr;
 	if (FAILED(hr = pSourceVoice->Start(0)))
 		return hr;
+	return hr;
 }
 
 SoundController::SoundController()
@@ -149,6 +151,7 @@ HRESULT SoundController::Initialize()
 	SetupSourceVoice(saucerFile, pSaucerVoice, saucerBuffer);
 	SetupSourceVoice(smallSaucerFile, pSmallSaucerVoice, smallSaucerBuffer);
 	SetupSourceVoice(thrustFile, pThrustVoice, thrustBuffer);
+	return hr;
 }
 
 HRESULT SoundController::playBackgroundSound()
@@ -160,6 +163,7 @@ HRESULT SoundController::pitchBackgroundSound(float pitch)
 {
 	if (FAILED(hr = pBackgroundVoice->SetFrequencyRatio(pitch)))
 		return hr;
+	return hr;
 }
 
 HRESULT SoundController::playAsteroidDestructionSound()
@@ -190,6 +194,7 @@ HRESULT SoundController::stopSaucerSound()
 		return hr;
 	if (pSaucerVoice != nullptr && FAILED(hr = pSmallSaucerVoice->Stop(0)))
 		return hr;
+	return hr;
 }
 
 HRESULT SoundController::playSmallSaucerSound()
@@ -208,6 +213,7 @@ HRESULT SoundController::playThrustSound()
 		this->thrusting = true;
 		return playAudio(pThrustVoice, thrustBuffer, true);
 	}
+	return hr;
 }
 
 HRESULT SoundController::stopThrustSound()
@@ -217,6 +223,7 @@ HRESULT SoundController::stopThrustSound()
 		if (FAILED(hr = pThrustVoice->Stop(0)))
 			return hr;
 	}
+	return hr;
 }
 
 HRESULT SoundController::stopAllSoundLoops()
@@ -229,4 +236,5 @@ HRESULT SoundController::stopAllSoundLoops()
 		return hr;
 	if (pThrustVoice != nullptr && FAILED(hr = pThrustVoice->Stop(0)))
 		return hr;
+	return hr;
 }

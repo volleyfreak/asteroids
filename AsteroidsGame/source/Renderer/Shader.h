@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "Renderer.h"
 struct ShaderProgramSource
 {
 	std::string VertexSource;
