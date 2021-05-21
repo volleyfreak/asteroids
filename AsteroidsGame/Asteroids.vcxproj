@@ -148,8 +148,8 @@ xcopy "$(ProjectDir)res\sounds\*.*"  "$(OutDir)res\sounds" \f</Command>
     <PostBuildEvent>
       <Command>mkdir "$(OutDir)res\shaders"
 mkdir "$(OutDir)res\sounds"
-xcopy "$(ProjectDir)res\shaders\*.*"  "$(OutDir)res\shaders" /f
-xcopy "$(ProjectDir)res\sounds\*.*"  "$(OutDir)res\sounds" /f</Command>
+xcopy "$(ProjectDir)res\shaders\*.*"  "$(OutDir)res\shaders" /f /y
+xcopy "$(ProjectDir)res\sounds\*.*"  "$(OutDir)res\sounds" /f /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
