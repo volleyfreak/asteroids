@@ -17,6 +17,7 @@ private:
 	HRESULT hr;
 	IXAudio2* pXAudio2 = nullptr;
 	bool thrusting = false;
+	bool backgroundPlaying = false;
 
 	IXAudio2SourceVoice* pBackgroundVoice;
 	const char* backgroundFile = __TEXT("./res/sounds/Background.wav");
@@ -70,8 +71,11 @@ public:
 	//Changes speed of backgrouns sound loop
 	HRESULT pitchBackgroundSound(float pitch);
 
+	//Stops background sound loop
+	HRESULT stopBackgroundSound();
+
 	//Plays asteroid destruction sound
-	HRESULT playAsteroidDestructionSound();
+	HRESULT playAsteroidDestructionSound(float pitch);
 
 	//Plays saucer destruction sound
 	HRESULT playSaucerDestructionSound();

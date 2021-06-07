@@ -1,5 +1,5 @@
 #shader vertex
-#version 460 core
+#version 400 core
 
 layout(location = 0) in vec2 aPosition;
 
@@ -20,13 +20,13 @@ void main()
 
 
 #shader fragment
-#version 460 core
+#version 400 core
 
 layout(location = 0) out vec4 color;
 
-uniform vec4 u_Color;
+uniform vec4 uColor;
 
 void main()
 {
-	color = u_Color;
+	color = uColor;
 };

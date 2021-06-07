@@ -156,7 +156,11 @@ HRESULT SoundController::Initialize()
 
 HRESULT SoundController::playBackgroundSound()
 {
-	return playAudio(pBackgroundVoice, backgroundBuffer, true, 0.5f);
+	if (!this->backgroundPlaying) {
+		this->backgroundPlaying = true;
+		return playAudio(pBackgroundVoice, backgroundBuffer, true, 0.5f);
+	}
+	return hr;
 }
 
 HRESULT SoundController::pitchBackgroundSound(float pitch)
@@ -166,9 +170,21 @@ HRESULT SoundController::pitchBackgroundSound(float pitch)
 	return hr;
 }
 
-HRESULT SoundController::playAsteroidDestructionSound()
+HRESULT SoundController::stopBackgroundSound()
+{
+	if (this->backgroundPlaying) {
+		this->backgroundPlaying = false;
+		if (FAILED(hr = pThrustVoice->Stop(0)))
+			return hr;
+	}
+	return hr;
+}
+
+HRESULT SoundController::playAsteroidDestructionSound(float pitch)
 {
 	SetupSourceVoice(destructionFile, pDestructionVoice, destructionBuffer);
+	if (FAILED(hr = pDestructionVoice->SetFrequencyRatio(0.5f + 0.5f * pitch)))
+		return hr;
 	return playAudio(pDestructionVoice, destructionBuffer, false, 0.3f);
 }
 
@@ -211,6 +227,7 @@ HRESULT SoundController::playThrustSound()
 {
 	if (!this->thrusting) {
 		this->thrusting = true;
+		thrustBuffer.PlayBegin = 0;
 		return playAudio(pThrustVoice, thrustBuffer, true);
 	}
 	return hr;

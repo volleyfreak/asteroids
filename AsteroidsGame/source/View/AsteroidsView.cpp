@@ -42,7 +42,7 @@ void AsteroidsView::GameTick(int lines)
 	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
-	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	shader.SetUniform4f("uColor", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	va.Bind();
 	GLCall(glDrawArrays(GL_LINES, 0, lines));

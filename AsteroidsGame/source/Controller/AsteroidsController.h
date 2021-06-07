@@ -34,7 +34,8 @@ private:
 	bool shooted = false;
 	unsigned int gameTick = 1;
 	float soundPitch = 0.0f;
-	int waitForspaceShip = WAIT_FOR_spaceShip + 1;
+	unsigned int waitForspaceShip = WAIT_FOR_SPACESHIP + 1;
+	unsigned int waitedForAsteroids = WAIT_FOR_ASTEROIDS + 1;
 	bool gameIsRunning = true;
 	bool exitGame = false;
 	bool escapeKeyDown = false;
@@ -74,7 +75,7 @@ private:
 		
 	void CreateExplosion(asteroids::Coords pos);
 	void CreatespaceShipExplosion(asteroids::Coords pos);
-	std::pair<AsteroidModel*, AsteroidsView*> CreateAsteroid(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.025f, unsigned int killCount = 0, asteroids::Coords forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) });
+	std::pair<AsteroidModel*, AsteroidsView*> CreateAsteroid(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.033f, unsigned int killCount = 0, asteroids::Coords forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) });
 	std::pair<SaucerModel*, AsteroidsView*> CreateBigSaucer();
 	std::pair<SaucerModel*, AsteroidsView*> CreateSmallSaucer();
 	std::pair<NumberModel*, AsteroidsView*> CreateNumber(int number);
