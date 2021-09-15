@@ -2,6 +2,11 @@
 
 
 
+void SpaceShipModel::move()
+{
+	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
+}
+
 SpaceShipModel::SpaceShipModel()
 	: GameModel()
 {

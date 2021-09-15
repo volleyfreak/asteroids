@@ -1,0 +1,7 @@
+Background.wav: https://freesound.org/people/CGEffex/sounds/96693/ CGEffex https://creativecommons.org/licenses/by/3.0/legalcode
+Destruction.wav: https://freesound.org/people/mitchelk/sounds/136765/ mitchelk https://creativecommons.org/publicdomain/zero/1.0/legalcode
+SaucerBackground_loop.wav: https://freesound.org/people/RICHERlandTV/sounds/216096/ RICHERlandTV https://creativecommons.org/licenses/by/3.0/legalcode
+Shooting.wav: https://freesound.org/people/MusicLegends/sounds/344310/ MusicLegends https://creativecommons.org/licenses/by/3.0/legalcode
+small_saucer_loop.wav: https://freesound.org/people/Syna-Max/sounds/59021/ Syna-Max https://creativecommons.org/licenses/by-nc/3.0/legalcode
+spaceShipDestruction.wav: https://freesound.org/people/ryansnook/sounds/110111/ ryansnook https://creativecommons.org/licenses/by-nc/3.0/legalcode
+Thrust_loop.wav: https://freesound.org/people/MATRIXXX_/sounds/515122/ MATRIXXX_ https://creativecommons.org/licenses/by/3.0/legalcode

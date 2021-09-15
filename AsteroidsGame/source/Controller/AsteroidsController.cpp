@@ -11,7 +11,7 @@ AsteroidsController::AsteroidsController(GLFWwindow* w)
 		auto life = new SpaceShipModel();
 		life->size = 0.07f;			
 		life->rotation = M_PI / 2;
-		lifes.insert(std::make_pair(life, new AsteroidsView(life, shader)));
+		lifes.insert(std::make_pair(std::shared_ptr<SpaceShipModel>(life), std::shared_ptr<AsteroidsView>(new AsteroidsView(life, shader))));
 	}
 
 	this->saucer = this->CreateBigSaucer();
@@ -286,7 +286,7 @@ void AsteroidsController::MoveOrCreateSaucer()
 	}
 }
 
-bool AsteroidsController::CheckLifes(std::set<std::pair<SpaceShipModel*, AsteroidsView*>> lifes) {
+bool AsteroidsController::CheckLifes(std::set<std::pair<std::shared_ptr<SpaceShipModel>, std::shared_ptr<AsteroidsView>>> lifes) {
 	if (lifes.size() == 0) {
 		return false;
 	}
@@ -368,7 +368,7 @@ void AsteroidsController::CreateExplosion(asteroids::Coords pos) {
 		float x = 0.002f * cos(asteroids::randomF(M_PI));
 		float y = 0.002f * sin(asteroids::randomF(M_PI));
 		auto bullet = new BulletModel(pos, { x, y });
-		this->explosionBullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, this->shader)));
+		this->explosionBullets.insert(std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet, this->shader))));
 	}
 }
 	
@@ -379,7 +379,7 @@ void AsteroidsController::CreatespaceShipExplosion(asteroids::Coords pos) {
 		auto bullet = new BulletModel(pos, { x, y });
 		bullet->bufferSize = 4;
 		bullet->rotation = abs(asteroids::randomF(M_PI));
-		this->spaceShipExplosionBullets.insert(std::make_pair(bullet, new AsteroidsView(bullet, this->shader)));
+		this->spaceShipExplosionBullets.insert(std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet, this->shader))));
 	}
 }
 
@@ -398,7 +398,7 @@ int AsteroidsController::DestroySpaceShip(SpaceShipModel& spaceShip) {
 	return 0;
 }
 
-unsigned int AsteroidsController::DestroySaucer(SaucerModel* saucer) {
+unsigned int AsteroidsController::DestroySaucer(std::shared_ptr<SaucerModel> saucer) {
 	saucer->isActive = false;
 	this->CreateExplosion(saucer->pos);
 	this->sound.playSaucerDestructionSound();
@@ -406,71 +406,71 @@ unsigned int AsteroidsController::DestroySaucer(SaucerModel* saucer) {
 	return saucer->score;
 }
 
-unsigned int AsteroidsController::SplitAsteroid(std::pair<AsteroidModel*, AsteroidsView*> asteroidPair, asteroids::Coords forward, float impact) {
+unsigned int AsteroidsController::SplitAsteroid(std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> asteroidPair, asteroids::Coords forward, float impact) {
+	auto asteroid = *asteroidPair.first;
 	this->asteroids.erase(asteroidPair);
-	auto asteroid = asteroidPair.first;
-	this->sound.playAsteroidDestructionSound((float) (asteroid->killCount + 1));
-	this->CreateExplosion(asteroid->pos);
-	if (asteroid->killCount < 2) {
-		asteroid->killCount++;
+	this->sound.playAsteroidDestructionSound((float) (asteroid.killCount+ 1));
+	this->CreateExplosion(asteroid.pos);
+	if (asteroid.killCount < 2) {
+		asteroid.killCount++;
 		int score = SCORE_LARGE_ASTEROID;
-		if (asteroid->killCount == 1) {
+		if (asteroid.killCount == 1) {
 			score = SCORE_MEDIUM_ASTEROID;
 		}
-		if (asteroid->killCount == 2) {
+		if (asteroid.killCount == 2) {
 			score = SCORE_SMALL_ASTEROID;
 		}
 		float rotation = abs(asteroids::randomF(M_PI / 4));
-		float x = (forward.x * impact + asteroid->forward.x) * cos(rotation);
-		float y = (forward.y * impact + asteroid->forward.y) * sin(rotation);
-		this->asteroids.insert(this->CreateAsteroid(score, asteroid->pos, asteroid->size * 0.45f, asteroid->killCount, { x, y }));
+		float x = (forward.x * impact + asteroid.forward.x) * cos(rotation);
+		float y = (forward.y * impact + asteroid.forward.y) * sin(rotation);
+		this->asteroids.insert(this->CreateAsteroid(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, { x, y }));
 		rotation = asteroids::randomF(M_PI / 4);
-		x = (forward.x * impact + asteroid->forward.x) * cos(rotation);
-		y = (forward.y * impact + asteroid->forward.y) * sin(rotation);
-		this->asteroids.insert(this->CreateAsteroid(score, asteroid->pos, asteroid->size * 0.45f, asteroid->killCount, { x, y }));
+		x = (forward.x * impact + asteroid.forward.x) * cos(rotation);
+		y = (forward.y * impact + asteroid.forward.y) * sin(rotation);
+		this->asteroids.insert(this->CreateAsteroid(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, { x, y }));
 	}
-	return asteroid->score;
+	return asteroid.score;
 }
 
-std::pair<AsteroidModel*, AsteroidsView*> AsteroidsController::CreateAsteroid(int score, asteroids::Coords pos, float size, unsigned int killCount, asteroids::Coords forward) {
+std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateAsteroid(int score, asteroids::Coords pos, float size, unsigned int killCount, asteroids::Coords forward) {
 	auto asteroid = new AsteroidModel(pos, size, killCount, score, forward);
-	return std::make_pair(asteroid, new AsteroidsView(asteroid, this->shader));
+	return std::make_pair(std::shared_ptr<AsteroidModel>(asteroid), std::shared_ptr <AsteroidsView>(new AsteroidsView(asteroid, this->shader)));
 }
-std::pair<SaucerModel*, AsteroidsView*> AsteroidsController::CreateBigSaucer() {
+std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateBigSaucer() {
 	auto saucer = new SaucerModel(SCORE_LARGE_SAUCER);
-	return std::make_pair(saucer, new AsteroidsView(saucer, this->shader));
+	return std::make_pair(std::shared_ptr<SaucerModel>(saucer), std::shared_ptr<AsteroidsView>(new AsteroidsView(saucer, this->shader)));
 }
-std::pair<SaucerModel*, AsteroidsView*> AsteroidsController::CreateSmallSaucer() {
+std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateSmallSaucer() {
 	auto saucer = new SaucerModel(SCORE_SMALL_SAUCER, 0.006f, 0.004f);
 	saucer->isSmallSaucer = true;
-	return std::make_pair(saucer, new AsteroidsView(saucer, this->shader));
+	return std::make_pair(std::shared_ptr<SaucerModel>(saucer), std::shared_ptr<AsteroidsView>(new AsteroidsView(saucer, this->shader)));
 }
 
-std::pair<NumberModel*, AsteroidsView*> AsteroidsController::CreateNumber(int number)
+std::pair< std::shared_ptr<NumberModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateNumber(int number)
 {
 	auto numberModel = new NumberModel(number);
-	return std::make_pair(numberModel, new AsteroidsView(numberModel, this->shader));
+	return std::make_pair(std::shared_ptr<NumberModel>(numberModel), std::shared_ptr<AsteroidsView>(new AsteroidsView(numberModel, this->shader)));
 }
 
-std::pair<BulletModel*, AsteroidsView*> AsteroidsController::CreateBullet(asteroids::Coords pos, float rotation) {
+std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateBullet(asteroids::Coords pos, float rotation) {
 	float x = 0.02f * cos(rotation);
 	float y = 0.02f * sin(rotation);
 	auto bullet = new BulletModel(pos, { x, y });
-	return std::make_pair(bullet, new AsteroidsView(bullet, this->shader));
+	return std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet, this->shader)));
 }
 
-std::pair<BulletModel*, AsteroidsView*> AsteroidsController::CreateSaucerBullet(asteroids::Coords pos) {
+std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateSaucerBullet(asteroids::Coords pos) {
 	float rotation = asteroids::randomF(M_PI);
 	float x = 0.01f * cos(rotation) - 0.01f * sin(rotation);
 	float y = 0.01f * sin(rotation) + 0.01f * cos(rotation);
 	auto bullet = new BulletModel(pos, { x, y });
-	return std::make_pair(bullet, new AsteroidsView(bullet, this->shader));
+	return std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet, this->shader)));
 }
 
-std::pair<BulletModel*, AsteroidsView*> AsteroidsController::CreateSmallSaucerBullet(asteroids::Coords pos, asteroids::Coords target) {
+std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> AsteroidsController::CreateSmallSaucerBullet(asteroids::Coords pos, asteroids::Coords target) {
 	float x = target.x - pos.x;
 	float y = target.y - pos.y;
 	asteroids::Coords forward = asteroids::normalize(x, y);
 	auto bullet = new BulletModel(pos, forward);
-	return std::make_pair(bullet, new AsteroidsView(bullet, this->shader));
+	return std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet, this->shader)));
 }
