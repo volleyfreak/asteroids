@@ -341,7 +341,10 @@ void AsteroidsController::UpdateInput(GLFWwindow* window, SpaceShipModel& spaceS
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 	{
-		this->spaceShip.shoot(this->sound);
+		this->spaceShip.shoot();
+		if (this->spaceShip.shooted == true) {
+			this->sound.playShootingSound();
+		}
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -414,15 +417,9 @@ unsigned int AsteroidsController::SplitAsteroid(std::pair<std::shared_ptr<Astero
 		}
 		if (asteroid.killCount == 2) {
 			score = SCORE_SMALL_ASTEROID;
-		}
-		float rotation = abs(asteroids::randomF(M_PI / 4));
-		float x = (forward.x * impact + asteroid.forward.x) * cos(rotation);
-		float y = (forward.y * impact + asteroid.forward.y) * sin(rotation);
-		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, { x, y }));
-		rotation = asteroids::randomF(M_PI / 4);
-		x = (forward.x * impact + asteroid.forward.x) * cos(rotation);
-		y = (forward.y * impact + asteroid.forward.y) * sin(rotation);
-		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, { x, y }));
+		}		
+		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
+		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
 	}
 	return asteroid.score;
 }

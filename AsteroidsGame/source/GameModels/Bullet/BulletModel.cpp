@@ -1,6 +1,6 @@
 #include "BulletModel.h"
 
-void BulletModel::move()
+void BulletModel::Move()
 {
 	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
 }

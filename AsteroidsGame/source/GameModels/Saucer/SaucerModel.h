@@ -4,7 +4,6 @@
 #include "../PhysicEngine.h"
 #include "Bullet/BulletModel.h"
 #include "View/AsteroidsView.h"
-#include <Sound/SoundController.h>
 
 //Game object for saucers
 class SaucerModel : public PhysicEngine

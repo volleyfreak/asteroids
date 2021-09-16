@@ -2,7 +2,7 @@
 
 
 
-void SpaceShipModel::move()
+void SpaceShipModel::Move()
 {
 	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
 }
@@ -15,12 +15,11 @@ std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> SpaceShi
 	return std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet)));
 }
 
-void SpaceShipModel::shoot(SoundController sound)
+void SpaceShipModel::shoot()
 {
 	if (!this->shooted && this->bullets.size() < 4) {
 		this->bullets.insert(CreateBullet(this->pos, this->rotation));
 		this->shooted = true;
-		sound.playShootingSound();
 	}
 }
 

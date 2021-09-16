@@ -76,11 +76,13 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Abstracts;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLFW\include;C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLEW\include;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Renderer;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;C:\source\uni\openGl\Asteroids\AsteroidsGame\source;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Abstracts;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLFW\lib-vc2019;C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,13 +109,15 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Abstracts;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLFW\include;C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLEW\include;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Renderer;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;C:\source\uni\openGl\Asteroids\AsteroidsGame\source;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\Abstracts;C:\source\uni\openGl\Asteroids\AsteroidsGame\source;C:\source\uni\openGl\Asteroids\AsteroidsGame\source\GameModels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLFW\lib-vc2019;C:\source\uni\openGl\Asteroids\AsteroidsGame\dependencies\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

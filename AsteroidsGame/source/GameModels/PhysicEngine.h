@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Utils.h"
+#include <constants.h>
 
 /**
  * Base class of the model implementation of the game
@@ -43,5 +44,12 @@ public:
 		float y = this->pos.y - otherModel.pos.y;
 		float distance = sqrt((x * x) + (y * y));
 		return distance <= this->GetCollisionRadius() + otherModel.GetCollisionRadius();
+	}
+
+	asteroids::Coords CalculateImpact(float impact) {
+		float rotation = abs(asteroids::randomF(M_PI / 4));
+		float x = (this->forward.x * impact + this->forward.x) * cos(rotation);
+		float y = (this->forward.y * impact + this->forward.y) * sin(rotation);
+		return { x,y };
 	}
 };
