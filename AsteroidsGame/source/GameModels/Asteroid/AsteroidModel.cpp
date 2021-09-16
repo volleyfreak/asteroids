@@ -2,7 +2,7 @@
 #pragma once
 
 AsteroidModel::AsteroidModel(asteroids::Coords pos, float size, unsigned int killCount, int score, asteroids::Coords forward)
-	: GameModel(), killCount(killCount)
+	: PhysicEngine(), killCount(killCount)
 {
 	auto random = abs(asteroids::randomF(1.0f));
 	if (random <= 0.333f) {
@@ -135,4 +135,9 @@ std::vector<float> AsteroidModel::GetAsteroid3() {
 		-1.5f,  2.5f,
 		 1.0f,  2.5f
 	};
+}
+
+void AsteroidModel::Move()
+{
+	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
 }

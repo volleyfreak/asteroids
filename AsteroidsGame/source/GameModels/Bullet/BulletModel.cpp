@@ -1,7 +1,12 @@
 #include "BulletModel.h"
 
+void BulletModel::move()
+{
+	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
+}
+
 BulletModel::BulletModel(asteroids::Coords pos, asteroids::Coords forward)
-	: GameModel()
+	: PhysicEngine()
 {
 	bufferSize = 2;
 	positions = {

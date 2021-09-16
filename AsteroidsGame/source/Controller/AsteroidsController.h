@@ -13,7 +13,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include "GameModels/GameModel.h"
+#include "GameModels/PhysicEngine.h"
 #include <Asteroid/AsteroidModel.h>
 #include <SpaceShip/SpaceShipModel.h>
 #include <Bullet/BulletModel.h>
@@ -32,7 +32,6 @@ class AsteroidsController
 {
 private:
 	unsigned int highscore = 0;
-	bool shooted = false;
 	unsigned int gameTick = 1;
 	float soundPitch = 0.0f;
 	unsigned int waitForspaceShip = WAIT_FOR_SPACESHIP + 1;
@@ -42,14 +41,12 @@ private:
 	bool escapeKeyDown = false;
 
 	Shader shader;
-	SpaceShipModel spaceShipModel;
+	SpaceShipModel spaceShip;
 	GLFWwindow* window;
 	SoundController sound = SoundController();
 
 	AsteroidsView spaceShipView;
 	std::set<std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>>> asteroids;
-	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> bullets;
-	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> saucerBullets;
 	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> explosionBullets;
 	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> spaceShipExplosionBullets;
 	std::set<std::pair<std::shared_ptr<SpaceShipModel>, std::shared_ptr<AsteroidsView>>> lifes;
@@ -76,13 +73,10 @@ private:
 		
 	void CreateExplosion(asteroids::Coords pos);
 	void CreatespaceShipExplosion(asteroids::Coords pos);
-	std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> CreateAsteroid(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.033f, unsigned int killCount = 0, asteroids::Coords forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) });
-	std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> CreateBigSaucer();
-	std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> CreateSmallSaucer();
-	std::pair<std::shared_ptr<NumberModel>, std::shared_ptr<AsteroidsView>> CreateNumber(int number);
-	std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> CreateBullet(asteroids::Coords pos, float rotation);
-	std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> CreateSaucerBullet(asteroids::Coords pos);
-	std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> CreateSmallSaucerBullet(asteroids::Coords pos, asteroids::Coords target);
+	std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> CreateAsteroidReferences(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.033f, unsigned int killCount = 0, asteroids::Coords forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) });
+	std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> CreateBigSaucerReferences();
+	std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> CreateSmallSaucerReferences();
+	std::pair<std::shared_ptr<NumberModel>, std::shared_ptr<AsteroidsView>> CreateNumberReferences(int number);
 public:		
 	//AsteroidsController initialization
 	// @param w Provide GLFWwindow

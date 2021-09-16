@@ -1,8 +1,31 @@
 #include "SaucerModel.h"
 #pragma once
 
+void SaucerModel::Move()
+{
+}
+
+
+void SaucerModel::ShootRandomBullet()
+{
+	float rotation = asteroids::randomF(M_PI);
+	float x = 0.01f * cos(rotation) - 0.01f * sin(rotation);
+	float y = 0.01f * sin(rotation) + 0.01f * cos(rotation);
+	auto bullet = new BulletModel(pos, { x, y });
+	this->bullets.insert(std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet))));
+}
+
+void SaucerModel::ShootTargetedBullet(asteroids::Coords target)
+{
+	float x = target.x - pos.x;
+	float y = target.y - pos.y;
+	asteroids::Coords forward = asteroids::normalize(x, y);
+	auto bullet = new BulletModel(pos, forward);
+	this->bullets.insert(std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet))));
+}
+
 SaucerModel::SaucerModel(int score, float size, float speed)
-	: GameModel()
+	: PhysicEngine()
 {
 	bufferSize = 40;
 	positions = {

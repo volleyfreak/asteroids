@@ -1,15 +1,25 @@
 #pragma once
+#include <set>
 
-#include "../GameModel.h"
+#include "../PhysicEngine.h"
+#include "Bullet/BulletModel.h"
+#include "View/AsteroidsView.h"
+#include <Sound/SoundController.h>
 
 //Game object for saucers
-class SaucerModel : public GameModel
+class SaucerModel : public PhysicEngine
 {
 public:
 	unsigned int ticks = 0;
 	unsigned int score = 0;
 	bool isActive = true;
 	bool isSmallSaucer = false;
+
+	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> bullets;
+
+	void Move();
+	void ShootRandomBullet();
+	void ShootTargetedBullet(asteroids::Coords target);
 
 	/**
 	 * Constructor for SaucerModel game object

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../GameModel.h"
+#include "../PhysicEngine.h"
 
 //Game object for numbers
-class NumberModel : public GameModel
+class NumberModel : public PhysicEngine
 {
 private:
 	std::vector<float> Get0();

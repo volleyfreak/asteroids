@@ -177,7 +177,7 @@ xcopy "$(ProjectDir)res\sounds\*.*"  "$(OutDir)res\sounds" /f /y</Command>
     <ClInclude Include="source\Controller\AsteroidsController.h" />
     <ClInclude Include="source\GameModels\Asteroid\AsteroidModel.h" />
     <ClInclude Include="source\Abstracts\constants.h" />
-    <ClInclude Include="source\GameModels\GameModel.h" />
+    <ClInclude Include="source\GameModels\PhysicEngine.h" />
     <ClInclude Include="source\Renderer\IndexBuffer.h" />
     <ClInclude Include="source\GameModels\Saucer\SaucerModel.h" />
     <ClInclude Include="source\Abstracts\Utils.h" />

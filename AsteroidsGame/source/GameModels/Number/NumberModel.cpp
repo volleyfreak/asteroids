@@ -1,7 +1,7 @@
 #include "NumberModel.h"
 
 NumberModel::NumberModel(int number)
-	: GameModel()
+	: PhysicEngine()
 {
 	bufferSize = 28;
 	switch (number) {

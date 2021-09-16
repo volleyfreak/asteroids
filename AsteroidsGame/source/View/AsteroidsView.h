@@ -1,9 +1,8 @@
 #pragma once
-#include "GameModels/GameModel.h"
+#include "GameModels/PhysicEngine.h"
 #include "constants.h"
 #include "Shader.h"
 #include "VertexArray.h"
-#include "Shader.h"
 
 /**
  * View implementation of the game
@@ -15,19 +14,18 @@ class AsteroidsView
 {
 private:
 	VertexArray va;
-	Shader& shader;
-	GameModel* gameModel;
+	PhysicEngine* gameModel;
 public:
-	AsteroidsView(GameModel* gameModel, Shader& s);
+	AsteroidsView(PhysicEngine* gameModel);
 	~AsteroidsView();
 
 	//Basic GameTick. Lines to draw are calculated by gameModel.bufferSize
-	void GameTick();
+	void Draw(Shader shader);
 
 	// @overload void GameTick(int lines)
-	void GameTick(int lines);
+	void Draw(Shader shader, int lines);
 
 	//Gametick for point objects
-	void BulletTick();
+	void DrawBullet(Shader shader);
 
 };

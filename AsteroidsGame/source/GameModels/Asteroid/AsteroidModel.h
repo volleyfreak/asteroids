@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../GameModel.h"
+#include "../PhysicEngine.h"
 
 //Game object for all asteroids
-class AsteroidModel: public GameModel
+class AsteroidModel: public PhysicEngine
 {
 private:
 	std::vector<float> GetAsteroid1();
@@ -12,7 +12,7 @@ private:
 public:
 	unsigned int score = 0;
 	unsigned int killCount = 0;
-
+	void Move();
 	/**
 	 * Constructor for AsteroidModel game object
 	 *

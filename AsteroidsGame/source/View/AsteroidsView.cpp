@@ -1,8 +1,7 @@
 #include "AsteroidsView.h"
 
 
-AsteroidsView::AsteroidsView(GameModel* gameModel, Shader& s)
-	:shader(s)
+AsteroidsView::AsteroidsView(PhysicEngine* gameModel)
 {
 	unsigned int vao;
 	GLCall(glGenVertexArrays(1, &vao));
@@ -21,22 +20,21 @@ AsteroidsView::AsteroidsView(GameModel* gameModel, Shader& s)
 AsteroidsView::~AsteroidsView()
 {
 	va.Unbind();
-	shader.Unbind();
 }
 
-void AsteroidsView::GameTick()
+void AsteroidsView::Draw(Shader shader)
 {
 	shader.Bind();
 	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
-	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	shader.SetUniform4f("uColor", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	va.Bind();
 	GLCall(glDrawArrays(GL_LINES, 0, gameModel->bufferSize / 2));
 }
 
-void AsteroidsView::GameTick(int lines)
+void AsteroidsView::Draw(Shader shader, int lines)
 {
 	shader.Bind();
 	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
@@ -48,13 +46,13 @@ void AsteroidsView::GameTick(int lines)
 	GLCall(glDrawArrays(GL_LINES, 0, lines));
 }
 
-void AsteroidsView::BulletTick()
+void AsteroidsView::DrawBullet(Shader shader)
 {
 	shader.Bind();
 	shader.SetUniform2f("uSize", gameModel->size * ASTEROIDS_SCALING_X, gameModel->size);
 	shader.SetUniform2f("uPosition", gameModel->pos.x, gameModel->pos.y);
 	shader.SetUniform1f("uRotate", gameModel->rotation);
-	shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+	shader.SetUniform4f("uColor", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	va.Bind();
 	GLCall(glDrawArrays(GL_POINTS, 0, gameModel->bufferSize / 2));

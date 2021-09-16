@@ -1,12 +1,14 @@
 #pragma once
 
-#include "../GameModel.h"
+#include "../PhysicEngine.h"
 
 //Game object for all bullets or explosion particles
-class BulletModel : public GameModel
+class BulletModel : public PhysicEngine
 {
 public:
 	unsigned int tickCount = 0;
+
+	void Move();
 
 	/**
 	 * Constructor for BulletModel game object

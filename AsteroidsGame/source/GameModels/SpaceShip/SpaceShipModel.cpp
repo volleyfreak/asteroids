@@ -7,8 +7,25 @@ void SpaceShipModel::move()
 	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
 }
 
+std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> SpaceShipModel::CreateBullet(asteroids::Coords pos, float rotation)
+{
+	float x = 0.02f * cos(rotation);
+	float y = 0.02f * sin(rotation);
+	auto bullet = new BulletModel(pos, { x, y });
+	return std::make_pair(std::shared_ptr<BulletModel>(bullet), std::shared_ptr<AsteroidsView>(new AsteroidsView(bullet)));
+}
+
+void SpaceShipModel::shoot(SoundController sound)
+{
+	if (!this->shooted && this->bullets.size() < 4) {
+		this->bullets.insert(CreateBullet(this->pos, this->rotation));
+		this->shooted = true;
+		sound.playShootingSound();
+	}
+}
+
 SpaceShipModel::SpaceShipModel()
-	: GameModel()
+	: PhysicEngine()
 {
 	bufferSize = 28;
 	positions = {
