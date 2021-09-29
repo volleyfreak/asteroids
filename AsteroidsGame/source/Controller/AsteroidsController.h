@@ -35,17 +35,18 @@ private:
 	unsigned int gameTick = 1;
 	float soundPitch = 0.0f;
 	unsigned int waitForspaceShip = WAIT_FOR_SPACESHIP + 1;
-	unsigned int waitedForAsteroids = WAIT_FOR_ASTEROIDS + 1;
+	unsigned int waitForAsteroids = WAIT_FOR_ASTEROIDS + 1;
 	bool gameIsRunning = true;
 	bool exitGame = false;
 	bool escapeKeyDown = false;
 
-	Shader shader;
-	SpaceShipModel spaceShip;
+	Shader shader;	
 	GLFWwindow* window;
+	AsteroidsView spaceShipView;
 	SoundController sound = SoundController();
 
-	AsteroidsView spaceShipView;
+	//game objects	
+	SpaceShipModel spaceShip;
 	std::set<std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>>> asteroids;
 	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> explosionBullets;
 	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> spaceShipExplosionBullets;
@@ -53,6 +54,7 @@ private:
 	std::pair<std::shared_ptr<NumberModel>, std::shared_ptr<AsteroidsView>> numbers[10];
 	std::pair<std::shared_ptr<SaucerModel>, std::shared_ptr<AsteroidsView>> saucer;
 
+	//gameflow
 	void MoveSpaceShipAndUpdateInput();
 	void MoveOrCreateSaucer();
 	void MoveOrCreateAsteroids();
@@ -63,14 +65,14 @@ private:
 	void DrawHighScore();
 	void DrawEndScreen();
 
+	//private helper methods
 	void UpdateInput(GLFWwindow* window, SpaceShipModel& spaceShip);
 	int DestroySpaceShip(SpaceShipModel& spaceShip);
 	unsigned int DestroySaucer(std::shared_ptr<SaucerModel> saucer);
 	unsigned int SplitAsteroid(std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> asteroidPair, asteroids::Coords forward, float impact);
 	bool CheckLifes(std::set<std::pair<std::shared_ptr<SpaceShipModel>, std::shared_ptr<AsteroidsView>>> lifes);
-	void collectDigits(std::vector<int>& digits, unsigned int num);
-	void resetPosition(SpaceShipModel& spaceShipModel);
-		
+	void getDigitsInReverseOrder(std::vector<int>& digits, unsigned int num);
+	void resetPosition(SpaceShipModel& spaceShipModel);		
 	void CreateExplosion(asteroids::Coords pos);
 	void CreatespaceShipExplosion(asteroids::Coords pos);
 	std::pair<std::shared_ptr<AsteroidModel>, std::shared_ptr<AsteroidsView>> CreateAsteroidReferences(int score, asteroids::Coords pos = { asteroids::randomF(), asteroids::randomF() }, float size = 0.033f, unsigned int killCount = 0, asteroids::Coords forward = { asteroids::randomF(-0.005f), asteroids::randomF(0.005f) });

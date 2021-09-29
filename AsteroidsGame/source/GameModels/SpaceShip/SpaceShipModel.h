@@ -11,15 +11,20 @@
 //Main playing figure, a spaceship that is moved by player input and can shoot
 class SpaceShipModel : public PhysicEngine
 {
+private:
+	std::shared_ptr<BulletModel> CreateBullet(asteroids::Coords pos, float rotation);
 public:
-	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> bullets;
+	std::set<std::shared_ptr<BulletModel>> bullets;
 
 	bool isBoosted = false;
 	bool isActive = true;
 	bool shooted = false;
-	void Move();
 	
-	std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>> CreateBullet(asteroids::Coords pos, float rotation);
+	/**
+	 * Creates a bullet and adds it to set of bullets of the Spaceship. The bullet has a fixed direction and speed
+	 *
+	 * @exceptsafe This function does not throw exceptions.
+	 */
 	void shoot();
 	SpaceShipModel();
 	~SpaceShipModel();

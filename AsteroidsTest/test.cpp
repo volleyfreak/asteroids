@@ -21,20 +21,20 @@
 
 TEST(Models, spaceShipInitializedAtZero) {
 	auto spaceShip = SpaceShipModel();
-	EXPECT_EQ(0.0f, spaceShip.pos.x);
-	EXPECT_EQ(0.0f, spaceShip.pos.y);
+	EXPECT_EQ(0.0f, spaceShip.position.x);
+	EXPECT_EQ(0.0f, spaceShip.position.y);
 }
 
 TEST(Models, AsteroidIsInitializedAtProvidedPos) {
 	auto asteroid = AsteroidModel({ 0.5f, 0.3f }, 1.0f, 0, 20, { 0.0f, 0.0f });
 	asteroids::Coords pos = { 0.5f, 0.3f };
-	EXPECT_EQ(pos.x, asteroid.pos.x);
-	EXPECT_EQ(pos.y, asteroid.pos.y);
+	EXPECT_EQ(pos.x, asteroid.position.x);
+	EXPECT_EQ(pos.y, asteroid.position.y);
 }
 
 TEST(Models, SaucerIsInitializedAtScreenSide) {
 	auto asteroid = SaucerModel(200);
-	EXPECT_EQ(1.0f, abs(asteroid.pos.x));
+	EXPECT_EQ(1.0f, abs(asteroid.position.x));
 }
 
 TEST(Collision, CollisionShouldBeFalse) {
@@ -59,13 +59,14 @@ TEST(Collision, CollisionShouldBeTrue) {
 
 TEST(Moving, MovingIsAlwaysInScreenBoundary) {
 	auto spaceShip = SpaceShipModel();
-	spaceShip.pos = asteroids::UpdatePosition(asteroids::Coords{ 5.0f,10.0f }, spaceShip.pos);
-	EXPECT_TRUE(abs(spaceShip.pos.x) <= 1.0f);
-	EXPECT_TRUE(abs(spaceShip.pos.y) <= 1.0f);
+	spaceShip.position = spaceShip.UpdatePosition(asteroids::Coords{ 5.0f,10.0f }, spaceShip.position);
+	EXPECT_TRUE(abs(spaceShip.position.x) <= 1.0f);
+	EXPECT_TRUE(abs(spaceShip.position.y) <= 1.0f);
 }
 
 TEST(Moving, NormalizesVector) {
+	auto spaceShip = SpaceShipModel();
 	asteroids::Coords coords = { 5.0f, 5.0f };
-	auto normal = asteroids::normalize(coords.x, coords.y);
+	auto normal = spaceShip.normalize(coords.x, coords.y);
 	EXPECT_NEAR(sqrt(normal.x * normal.x + normal.y * normal.y), 0.015f, 0.001f);
 }

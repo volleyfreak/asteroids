@@ -86,12 +86,12 @@ void AsteroidsController::MoveExplosionParticles()
 	for (auto bulletIt = this->explosionBullets.begin(); bulletIt != this->explosionBullets.end(); )
 	{
 		auto bullet = *bulletIt++;
-		bullet.first->pos = UpdatePosition(bullet.first->forward, bullet.first->pos);
+		bullet.first.get()->Move();
 		bullet.second->DrawBullet(shader);
 		if (bullet.first->tickCount++ > 50) {
 			this->explosionBullets.erase(bullet);
 		}
-	}		
+	}
 }
 	
 void AsteroidsController::MoveSpaceShipExplosionParticles()
@@ -111,9 +111,9 @@ void AsteroidsController::DrawHighScore()
 {
 	float count = 0.02f;
 	std::vector<int> digits;
-	collectDigits(digits, this->highscore);
+	getDigitsInReverseOrder(digits, this->highscore);
 	for (int i = 0; i < digits.size() ; i++) {
-		numbers[digits[i]].first->pos = { -1.0f + count , 0.95f };
+		numbers[digits[i]].first->position = { -1.0f + count , 0.95f };
 		numbers[digits[i]].second->Draw(shader);
 		count += 0.03f;
 	}
@@ -124,9 +124,9 @@ void AsteroidsController::DrawEndScreen()
 	this->sound.stopAllSoundLoops();
 	float count = 0.0f;
 	std::vector<int> digits;
-	collectDigits(digits, this->highscore);
+	getDigitsInReverseOrder(digits, this->highscore);
 	for (int i = (int)digits.size() - 1; i >= 0 ; i--) {
-		numbers[digits[i]].first->pos = { 0.03f - count , -0.02f };
+		numbers[digits[i]].first->position = { 0.03f - count , -0.02f };
 		numbers[digits[i]].second->Draw(shader);
 		count += 0.03f;
 	}
@@ -137,9 +137,9 @@ void AsteroidsController::DrawEndScreen()
 	}
 }
 
-void AsteroidsController::collectDigits(std::vector<int>& digits, unsigned int num) {
+void AsteroidsController::getDigitsInReverseOrder(std::vector<int>& digits, unsigned int num) {
 	if (num > 9) {
-		collectDigits(digits, num / 10);
+		getDigitsInReverseOrder(digits, num / 10);
 	}
 	digits.push_back(num % 10);
 }
@@ -148,7 +148,7 @@ void AsteroidsController::resetPosition(SpaceShipModel& spaceShipModel)
 {
 	spaceShipModel.isActive = false;
 	this->waitForspaceShip = 200;		
-	spaceShipModel.pos = { asteroids::randomF(1.0f), asteroids::randomF(1.0f) };
+	spaceShipModel.position = { asteroids::randomF(1.0f), asteroids::randomF(1.0f) };
 	spaceShipModel.forward = { 0.0f, 0.0f };
 }	
 
@@ -157,22 +157,23 @@ void AsteroidsController::MoveSaucerBullets()
 	for (auto bulletIt = this->saucer.first->bullets.begin(); bulletIt != this->saucer.first->bullets.end(); )
 	{
 		auto bullet = *bulletIt++;
-		bullet.first->Move();
-		bullet.second->DrawBullet(shader);
-		if (bullet.first->tickCount++ > BULLET_LIFETIME) {
+		bullet->Move();
+		auto view = AsteroidsView(bullet.get());
+		view.DrawBullet(shader);
+		if (bullet->tickCount++ > BULLET_LIFETIME) {
 			this->saucer.first->bullets.erase(bullet);
 		}
 		else {
 			for (auto it = this->asteroids.begin(); it != this->asteroids.end();)
 			{
 				auto asteroid = *it++;
-				if (bullet.first->IsCollision(*asteroid.first)) {
+				if (bullet->IsCollision(*asteroid.first)) {
 					this->saucer.first->bullets.erase(bullet);
-					this->highscore += this->SplitAsteroid(asteroid, bullet.first->forward, BULLET_IMPACT);
+					this->highscore += this->SplitAsteroid(asteroid, bullet->forward, BULLET_IMPACT);
 					break;
 				}
 			}
-			if (spaceShip.isActive && bullet.first->IsCollision(this->spaceShip)) {
+			if (spaceShip.isActive && bullet->IsCollision(this->spaceShip)) {
 				this->saucer.first->bullets.erase(bullet);
 				this->waitForspaceShip = this->DestroySpaceShip(this->spaceShip);
 			}
@@ -186,26 +187,25 @@ void AsteroidsController::MoveSpaceShipBullets()
 	for (auto bulletIt = this->spaceShip.bullets.begin(); bulletIt != this->spaceShip.bullets.end(); )
 	{
 		auto bullet = *bulletIt++;
-		bullet.first->Move();
-		bullet.second->DrawBullet(shader);
-		if (bullet.first->tickCount++ > BULLET_LIFETIME) {
+		bullet->Move();
+		auto view = AsteroidsView(bullet.get());
+		view.DrawBullet(shader);
+		if (bullet->tickCount++ > BULLET_LIFETIME) {
 			this->spaceShip.bullets.erase(bullet);
 		}
 		else {
 			for (auto it = this->asteroids.begin(); it != this->asteroids.end();)
 			{
 				auto asteroid = *it++;
-				if (bullet.first->IsCollision(*asteroid.first)){
+				if (bullet->IsCollision(*asteroid.first)){
 					this->spaceShip.bullets.erase(bullet);
-					this->highscore += this->SplitAsteroid(asteroid, bullet.first->forward, BULLET_IMPACT);
+					this->highscore += this->SplitAsteroid(asteroid, bullet->forward, BULLET_IMPACT);
 					break;
 				}
 			}
-			if (this->saucer.first->isActive && bullet.first->IsCollision(*saucer.first)) {
+			if (this->saucer.first->isActive && bullet->IsCollision(*saucer.first)) {
 				this->spaceShip.bullets.erase(bullet);
 				this->highscore += this->DestroySaucer(this->saucer.first);
-
-				std::cout << "current Score = " << this->highscore << std::endl;
 			}
 		}		
 	}
@@ -214,14 +214,14 @@ void AsteroidsController::MoveSpaceShipBullets()
 void AsteroidsController::MoveOrCreateAsteroids()
 {
 	if (this->asteroids.size() == 0 && !this->saucer.first->isActive) {
-		this->waitedForAsteroids++;
+		this->waitForAsteroids++;
 	}
-	if (this->asteroids.size() == 0 && !this->saucer.first->isActive && this->waitedForAsteroids > WAIT_FOR_ASTEROIDS) {
+	if (this->asteroids.size() == 0 && !this->saucer.first->isActive && this->waitForAsteroids > WAIT_FOR_ASTEROIDS) {
 		this->soundPitch = 0.0f;
 		for (auto i = 0; i < 4; i++) {
 			this->asteroids.insert(this->CreateAsteroidReferences(SCORE_LARGE_ASTEROID));
 		}
-		this->waitedForAsteroids = 0;
+		this->waitForAsteroids = 0;
 	}
 	else {
 		for (auto it = this->asteroids.begin(); it != this->asteroids.end();)
@@ -252,7 +252,7 @@ void AsteroidsController::MoveOrCreateSaucer()
 		this->saucer.first->ticks++;
 		if (this->saucer.first->ticks % SAUCER_SHOOTING_INTERVALL == 0 && this->spaceShip.isActive) {
 			if (this->saucer.first->isSmallSaucer) {
-				this->saucer.first->ShootTargetedBullet(this->spaceShip.pos);
+				this->saucer.first->ShootTargetedBullet(this->spaceShip.position);
 			}
 			else {
 				this->saucer.first->ShootRandomBullet();
@@ -262,7 +262,7 @@ void AsteroidsController::MoveOrCreateSaucer()
 		if (this->saucer.first->ticks % SAUCER_CHANGE_DIRECTION_INTERVALL == 0) {
 			this->saucer.first->forward.y = asteroids::randomF(-0.005f);
 		}
-		if (abs(this->saucer.first->pos.x) == 1.0f) {
+		if (abs(this->saucer.first->position.x) == 1.0f) {
 			this->saucer.first->isActive = false;	
 			this->sound.stopSaucerSound();
 		}
@@ -293,7 +293,7 @@ bool AsteroidsController::CheckLifes(std::set<std::pair<std::shared_ptr<SpaceShi
 	for (auto lifeIt = lifes.begin(); lifeIt != lifes.end(); )
 	{
 		auto life = *lifeIt++;
-		life.first->pos = { -1.0f + distance, 0.9f };
+		life.first->position = { -1.0f + distance, 0.9f };
 		life.second->Draw(shader, life.first->bufferSize / 2 - 4);
 		distance += 0.05f;
 	}
@@ -341,10 +341,10 @@ void AsteroidsController::UpdateInput(GLFWwindow* window, SpaceShipModel& spaceS
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 	{
-		this->spaceShip.shoot();
-		if (this->spaceShip.shooted == true) {
+		if (this->spaceShip.shooted == false) {
 			this->sound.playShootingSound();
 		}
+		this->spaceShip.shoot();		
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -382,14 +382,14 @@ void AsteroidsController::CreatespaceShipExplosion(asteroids::Coords pos) {
 }
 
 int AsteroidsController::DestroySpaceShip(SpaceShipModel& spaceShip) {
-	this->CreatespaceShipExplosion(spaceShip.pos);
+	this->CreatespaceShipExplosion(spaceShip.position);
 	this->lifes.erase(std::prev(this->lifes.end()));
 	this->sound.playspaceShipDestructionSound();
 	this->sound.stopThrustSound();
 	this->sound.stopBackgroundSound();
 
 	spaceShip.forward = { 0.0f, 0.0f };
-	spaceShip.pos = { 0.0f, 0.0f };
+	spaceShip.position = { 0.0f, 0.0f };
 	spaceShip.rotation = 0.0f;
 	spaceShip.isActive = false;
 	spaceShip.isBoosted = false;		
@@ -398,7 +398,7 @@ int AsteroidsController::DestroySpaceShip(SpaceShipModel& spaceShip) {
 
 unsigned int AsteroidsController::DestroySaucer(std::shared_ptr<SaucerModel> saucer) {
 	saucer->isActive = false;
-	this->CreateExplosion(saucer->pos);
+	this->CreateExplosion(saucer->position);
 	this->sound.playSaucerDestructionSound();
 	this->sound.stopSaucerSound();
 	return saucer->score;
@@ -408,7 +408,7 @@ unsigned int AsteroidsController::SplitAsteroid(std::pair<std::shared_ptr<Astero
 	auto asteroid = *asteroidPair.first;
 	this->asteroids.erase(asteroidPair);
 	this->sound.playAsteroidDestructionSound((float) (asteroid.killCount+ 1));
-	this->CreateExplosion(asteroid.pos);
+	this->CreateExplosion(asteroid.position);
 	if (asteroid.killCount < 2) {
 		asteroid.killCount++;
 		int score = SCORE_LARGE_ASTEROID;
@@ -418,8 +418,8 @@ unsigned int AsteroidsController::SplitAsteroid(std::pair<std::shared_ptr<Astero
 		if (asteroid.killCount == 2) {
 			score = SCORE_SMALL_ASTEROID;
 		}		
-		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
-		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.pos, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
+		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.position, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
+		this->asteroids.insert(this->CreateAsteroidReferences(score, asteroid.position, asteroid.size * 0.45f, asteroid.killCount, asteroid.CalculateImpact(impact)));
 	}
 	return asteroid.score;
 }

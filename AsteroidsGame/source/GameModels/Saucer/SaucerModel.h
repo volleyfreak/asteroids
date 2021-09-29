@@ -14,10 +14,20 @@ public:
 	bool isActive = true;
 	bool isSmallSaucer = false;
 
-	std::set<std::pair<std::shared_ptr<BulletModel>, std::shared_ptr<AsteroidsView>>> bullets;
+	std::set<std::shared_ptr<BulletModel>> bullets;
 
-	void Move();
+	/**
+	 * Creates a bullet and adds it to set of bullets of the saucer. The bullet has a random direction and fixed speed
+	 *
+	 * @exceptsafe This function does not throw exceptions.
+	 */
 	void ShootRandomBullet();
+
+	/**
+	 * Creates a bullet and adds it to set of bullets of the Spaceship. The bullet's direction is targeted to the spacecraft and it has a fixed speed
+	 *
+	 * @exceptsafe This function does not throw exceptions.
+	 */
 	void ShootTargetedBullet(asteroids::Coords target);
 
 	/**

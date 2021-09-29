@@ -2,7 +2,7 @@
 
 #include "../PhysicEngine.h"
 
-//Game object for all asteroids
+// Game object class for all 3 shapes of Asteroids. They shape is selected randomly.
 class AsteroidModel: public PhysicEngine
 {
 private:
@@ -12,7 +12,7 @@ private:
 public:
 	unsigned int score = 0;
 	unsigned int killCount = 0;
-	void Move();
+
 	/**
 	 * Constructor for AsteroidModel game object
 	 *

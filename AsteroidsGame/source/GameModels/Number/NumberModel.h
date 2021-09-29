@@ -17,7 +17,6 @@ private:
 	std::vector<float> Get8();
 	std::vector<float> Get9();
 public:
-	unsigned int tickCount = 0;
 
 	/**
 	 * Constructor for SaucerModel game object

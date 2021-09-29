@@ -8,8 +8,6 @@ class BulletModel : public PhysicEngine
 public:
 	unsigned int tickCount = 0;
 
-	void Move();
-
 	/**
 	 * Constructor for BulletModel game object
 	 *

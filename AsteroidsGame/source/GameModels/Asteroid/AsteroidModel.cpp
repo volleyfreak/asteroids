@@ -6,19 +6,19 @@ AsteroidModel::AsteroidModel(asteroids::Coords pos, float size, unsigned int kil
 {
 	auto random = abs(asteroids::randomF(1.0f));
 	if (random <= 0.333f) {
-		positions = GetAsteroid1();
+		layout = GetAsteroid1();
 		bufferSize = 40;
 	}
 	else if (random <= 0.666f) {
-		positions = GetAsteroid2();
+		layout = GetAsteroid2();
 		bufferSize = 44;
 	}
 	else {
-		positions = GetAsteroid3();
+		layout = GetAsteroid3();
 		bufferSize = 44;
 	}	
 	this->score = score;
-	this->pos = pos;
+	this->position = pos;
 	this->rotation = 0.0f;
 	this->size = size;
 	this->collisionFactor = 2.7f;
@@ -137,7 +137,4 @@ std::vector<float> AsteroidModel::GetAsteroid3() {
 	};
 }
 
-void AsteroidModel::Move()
-{
-	this->pos = asteroids::UpdatePosition(this->forward, this->pos);
-}
+

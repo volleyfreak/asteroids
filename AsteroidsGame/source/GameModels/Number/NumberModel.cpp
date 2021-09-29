@@ -6,43 +6,43 @@ NumberModel::NumberModel(int number)
 	bufferSize = 28;
 	switch (number) {
 	case 0:
-		this->positions = Get0();
+		this->layout = Get0();
 		bufferSize = 6*4;
 		break;
 	case 1:
-		this->positions = Get1();
+		this->layout = Get1();
 		bufferSize = 2 * 4;
 		break;
 	case 2:
-		this->positions = Get2();
+		this->layout = Get2();
 		bufferSize = 5 * 4;
 		break;
 	case 3:
-		this->positions = Get3();
+		this->layout = Get3();
 		bufferSize = 5 * 4;
 		break;
 	case 4:
-		this->positions = Get4();
+		this->layout = Get4();
 		bufferSize = 4 * 4;
 		break;
 	case 5:
-		this->positions = Get5();
+		this->layout = Get5();
 		bufferSize = 5 * 4;
 		break;
 	case 6:
-		this->positions = Get6();
+		this->layout = Get6();
 		bufferSize = 5 * 4;
 		break;
 	case 7:
-		this->positions = Get7();
+		this->layout = Get7();
 		bufferSize = 3 * 4;
 		break;
 	case 8:
-		this->positions = Get8();
+		this->layout = Get8();
 		bufferSize = 7 * 4;
 		break;
 	case 9:
-		this->positions = Get9();
+		this->layout = Get9();
 		bufferSize = 6 * 4;
 		break;
 	}
