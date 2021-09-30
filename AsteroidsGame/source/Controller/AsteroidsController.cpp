@@ -6,6 +6,9 @@ AsteroidsController::AsteroidsController(GLFWwindow* w)
 	spaceShipView(AsteroidsView(&spaceShip)),
 	window(w)
 {
+	//workaround
+	spaceShip = SpaceShipModel();
+	spaceShipView = AsteroidsView(&spaceShip);
 	srand((unsigned int)time(NULL));
 	for (auto i = 0; i < 3; i++) {
 		auto life = new SpaceShipModel();
